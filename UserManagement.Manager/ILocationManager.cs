@@ -8,6 +8,5 @@ namespace UserManagement.Manager
         List<CountryEntity> GetCountries();
         List<StateEntity> GetStates();
         List<CityEntity> GetCities();
-
     }
 }
