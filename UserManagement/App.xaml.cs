@@ -1,7 +1,7 @@
-﻿using DryIoc;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
+using NLog;
 using UserManagement.Common.Utilities;
 using UserManagement.Core.Views;
 using UserManagement.Manager;
@@ -16,9 +16,22 @@ namespace UserManagement.Core
     /// </summary>
     public partial class App
     {
+        public Logger logger;
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
+        }
+
+        public App()
+        {
+            logger = LogManager.GetCurrentClassLogger();
+            this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+        }
+
+        void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            logger.Error(e.Exception);
+            e.Handled = false;
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -29,7 +42,6 @@ namespace UserManagement.Core
             containerRegistry.Register<IWindowsWebService, WindowsWebService>();
             containerRegistry.Register<IWindowsManager, WindowsManager>();
             containerRegistry.Register<ILocationManager, LocationManager>();
-
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
