@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctrl="clr-namespace:UserManagement.UI.CustomControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              d:DesignHeight="720"
              d:DesignWidth="640"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d">
-    
+             mc:Ignorable="d" 
+             AutomationProperties.AutomationId="RegisterMasterStore2Page">
+
     <Grid>
         <StackPanel VerticalAlignment="Center"
                     Orientation="Vertical">
@@ -30,13 +30,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <StackPanel Margin="20,10">
                     <TextBlock FontSize="28"
                                FontWeight="SemiBold"
                                Foreground="#CE6F1D"
-                               Text="Name of Store" />
+                               Text="Name of Facility" />
                     <ctrl:CustomTextBox Height="40"
                                         Margin="0,5,0,0"
                                         Background="White"
@@ -60,8 +61,21 @@
                                         Placeholder=""
                                         Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
-
                 <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="20,10" HorizontalAlignment="Center">
+
+                    <TextBlock FontSize="28" FontWeight="SemiBold" Foreground="#CE6F1D" Text="Facility Type:" />
+
+                    <Border Margin="0,5,0,0" Padding="2" Background="#7ED469">
+
+                        <ComboBox Height="40" Width="400" Padding="5" VerticalContentAlignment="Center" BorderThickness="0" 
+                              DisplayMemberPath="DisplayName" FontSize="14" ItemsSource="{Binding FacilityTypes}" 
+                              SelectedItem="{Binding SelectedFacilityType}" SelectedIndex="0"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Grid.Row="2"
                             Grid.Column="0"
                             Margin="20,10">
                     <TextBlock FontSize="28"
@@ -74,10 +88,11 @@
                                         BorderBrush="#7ED469"
                                         Placeholder="256_1335"
                                         ControlMaxLength="20"
-                                        Text="{Binding Street, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Street, 
+                        UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="2"
                             Grid.Column="1"
                             Margin="20,10">
                     <TextBlock FontSize="28"
@@ -122,7 +137,7 @@
                         Margin="10,0"
                         Command="{Binding SubmitCommand}"
                         Content="SUBMIT"
-                        Style="{StaticResource RoundButton2Style}" />
+                        Style="{StaticResource RoundButton2Style}" AutomationProperties.AutomationId="SubmitButton" />
             </Grid>
         </StackPanel>
 

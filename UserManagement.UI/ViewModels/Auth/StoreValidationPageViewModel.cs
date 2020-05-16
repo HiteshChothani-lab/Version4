@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Regions;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using UserManagement.Common.Constants;
@@ -22,6 +23,13 @@ namespace UserManagement.UI.ViewModels
 				.ObservesProperty(() => this.Username)
 				.ObservesProperty(() => this.AccessCode)
 				.ObservesProperty(() => this.CanExecuteSubmitCommand);
+
+			FacilityTypes = new List<FacilityType>()
+			{
+				new FacilityType() { DisplayName = "Clinic", Value = "Clinic", ID = 1 },
+				new FacilityType() { DisplayName = "Hospital", Value = "Hospital", ID = 2 },
+				new FacilityType() { DisplayName = "Test Center", Value = "Test Center", ID = 3 }
+			};
 		}
 
 		private string _username;
@@ -44,6 +52,21 @@ namespace UserManagement.UI.ViewModels
 			get => _canExecuteSubmitCommand;
 			set => SetProperty(ref _canExecuteSubmitCommand, value);
 		}
+
+		private List<FacilityType> _facilityTypes;
+		public List<FacilityType> FacilityTypes
+		{
+			get => _facilityTypes;
+			set => SetProperty(ref _facilityTypes, value);
+		}
+
+		private FacilityType _selectedFacilityType;
+		public FacilityType SelectedFacilityType
+		{
+			get => _selectedFacilityType;
+			set => SetProperty(ref _selectedFacilityType, value);
+		}
+
 		public DelegateCommand SubmitCommand { get; private set; }
 
 		private async Task ExecuteSubmitCommand()
@@ -93,6 +116,13 @@ namespace UserManagement.UI.ViewModels
 			this.Username = "Store4";
 			this.AccessCode = "111111";
 #endif
+		}
+
+		public class FacilityType
+		{
+			public int ID { get; set; }
+			public string DisplayName { get; set; }
+			public string Value { get; set; }
 		}
 	}
 }
