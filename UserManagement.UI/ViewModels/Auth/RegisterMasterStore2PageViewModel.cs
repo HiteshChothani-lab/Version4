@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Regions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Common.Constants;
 using UserManagement.UI.ItemModels;
@@ -19,9 +20,15 @@ namespace UserManagement.UI.ViewModels
 				.ObservesProperty(() => this.PhoneNumber)
 				.ObservesProperty(() => this.Street)
 				.ObservesProperty(() => this.Address);
+
+			FacilityTypes = new List<FacilityType>()
+			{
+				new FacilityType() { DisplayName = "Clinic", Value = "Clinic", ID = 1 },
+				new FacilityType() { DisplayName = "Hospital", Value = "Hospital", ID = 2 },
+				new FacilityType() { DisplayName = "Test Center", Value = "Test Center", ID = 3 }
+			};
 		}
 
-		
 		private MasterStoreItemModel _masterStore;
 		public MasterStoreItemModel MasterStore
 		{
@@ -55,6 +62,20 @@ namespace UserManagement.UI.ViewModels
 		{
 			get => _address;
 			set => SetProperty(ref _address, value);
+		}
+
+		private List<FacilityType> _facilityTypes;
+		public List<FacilityType> FacilityTypes
+		{
+			get => _facilityTypes;
+			set => SetProperty(ref _facilityTypes, value);
+		}
+
+		private FacilityType _selectedFacilityType;
+		public FacilityType SelectedFacilityType
+		{
+			get => _selectedFacilityType;
+			set => SetProperty(ref _selectedFacilityType, value);
 		}
 
 		public DelegateCommand BackCommand { get; private set; }
@@ -95,5 +116,11 @@ namespace UserManagement.UI.ViewModels
 #endif
         }
 
-    }
+		public class FacilityType
+		{
+			public int ID { get; set; }
+			public string DisplayName { get; set; }
+			public string Value { get; set; }
+		}
+	}
 }
