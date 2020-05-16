@@ -5,8 +5,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using UserManagement.Common.Constants;
@@ -17,169 +15,148 @@ using UserManagement.UI.ItemModels;
 
 namespace UserManagement.UI.ViewModels
 {
-	public class RegisterMasterStoreReviewPageViewModel : ViewModelBase
-	{
-		private readonly IWindowsManager _windowsManager;
+    public class RegisterMasterStoreReviewPageViewModel : ViewModelBase
+    {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IWindowsManager _windowsManager;
 
-        public RegisterMasterStoreReviewPageViewModel(IRegionManager regionManager, 
-            IWindowsManager windowsManager, IEventAggregator eventAggregator) : base(regionManager)
+        public RegisterMasterStoreReviewPageViewModel(IRegionManager regionManager,
+                    IWindowsManager windowsManager, IEventAggregator eventAggregator) : base(regionManager)
         {
             _eventAggregator = eventAggregator;
             _windowsManager = windowsManager;
 
-			this.BackCommand = new DelegateCommand(() => ExecuteBackCommand());
-			this.SubmitCommand = new DelegateCommand(async () => await ExecuteSubmitCommand());
-		}
+            BackCommand = new DelegateCommand(() => ExecuteBackCommand());
+            SubmitCommand = new DelegateCommand(async () => await ExecuteSubmitCommand());
+        }
 
+        public DelegateCommand BackCommand { get; private set; }
 
-		private MasterStoreItemModel _masterStore;
-		public MasterStoreItemModel MasterStore
-		{
-			get => _masterStore;
-			set => SetProperty(ref _masterStore, value);
-		}
+        private MasterStoreItemModel _masterStore;
+        public MasterStoreItemModel MasterStore
+        {
+            get => _masterStore;
+            set => SetProperty(ref _masterStore, value);
+        }
 
-		public DelegateCommand BackCommand { get; private set; }
-		public DelegateCommand SubmitCommand { get; private set; }
+        public DelegateCommand SubmitCommand { get; private set; }
 
-		private void ExecuteBackCommand()
-		{
-			this.RegionNavigationService.Journal.CurrentEntry.Parameters.Add(NavigationConstants.MasterStoreModel, this.MasterStore);
-			this.RegionNavigationService.Journal.GoBack();
-		}
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
 
+            if (navigationContext.Parameters.All(x => x.Key != NavigationConstants.MasterStoreModel)) return;
+            MasterStore = null;
+            MasterStore = navigationContext.Parameters[NavigationConstants.MasterStoreModel] as MasterStoreItemModel;
+        }
 
-		private async Task ExecuteSubmitCommand()
-		{
-            try
+        private void ExecuteBackCommand()
+        {
+            RegionNavigationService.Journal.CurrentEntry.Parameters.Add(NavigationConstants.MasterStoreModel, MasterStore);
+            RegionNavigationService.Journal.GoBack();
+        }
+
+        private async Task ExecuteSubmitCommand()
+        {
+            var reqEntity = new RegisterMasterStoreRequestEntity
             {
-                var reqEntity = new RegisterMasterStoreRequestEntity()
-                {
-                    Address = this.MasterStore.Address,
-                    AppVersionName = Config.CurrentUser.AppVersionName,
-                    City = this.MasterStore.City.Name,
-                    Country = this.MasterStore.Country.Name,
-                    CountryCode = this.MasterStore.Country.PhoneCode,
-                    DeviceId = getUniqueID("C"),
-                    DeviceToken = "Push Notification Id",
-                    DeviceType = "Windows",
-                    PhoneNumber = this.MasterStore.PhoneNumber,
-                    PostalCode = this.MasterStore.PostalCode,
-                    State = this.MasterStore.State.Name,
-                    StoreName = this.MasterStore.StoreName,
-                    StorePrefferedLanguage = "English",
-                    Street = this.MasterStore.Street,
-                    UserId = this.MasterStore.UserId,
-                    TimeZone = this.MasterStore.TimeZone,
-                    SelectedTimeZone = this.MasterStore.SelectedTimeZone
-                };
+                Address = MasterStore.Address,
+                AppVersionName = Config.CurrentUser.AppVersionName,
+                City = MasterStore.City.Name,
+                Country = MasterStore.Country.Name,
+                CountryCode = MasterStore.Country.PhoneCode,
+                DeviceId = getUniqueID("C"),
+                DeviceToken = "Push Notification Id",
+                DeviceType = "Windows",
+                PhoneNumber = MasterStore.PhoneNumber,
+                PostalCode = MasterStore.PostalCode,
+                State = MasterStore.State.Name,
+                StoreName = MasterStore.StoreName,
+                FacilityType = MasterStore.FacilityType,
+                StorePreferedLanguage = "English",
+                Street = MasterStore.Street,
+                UserId = MasterStore.UserId,
+                TimeZone = MasterStore.TimeZone,
+                SelectedTimeZone = MasterStore.SelectedTimeZone
+            };
 
-                var result = await _windowsManager.RegisterMasterStore(reqEntity);
-                PusherData.MasterStoreID = result.StoreId.ToString();
-                await Pushers.Client.Init(_eventAggregator);
+            var result = await _windowsManager.RegisterMasterStore(reqEntity);
+            PusherData.MasterStoreID = result.StoreId.ToString();
+            await Pushers.Client.Init(_eventAggregator);
 
-                if (result.StatusCode == (int)GenericStatusValue.Success)
-                {
-                    if (Convert.ToBoolean(result.Status))
+            switch (result.StatusCode)
+            {
+                case (int)GenericStatusValue.Success when Convert.ToBoolean(result.Status):
                     {
                         var parameters = new NavigationParameters();
                         parameters.Add(NavigationConstants.RegisteredMasterStore, result);
-                        this.RegionManager.RequestNavigate("ContentRegion", ViewNames.MainPage, parameters);
+                        RegionManager.RequestNavigate("ContentRegion", ViewNames.MainPage, parameters);
+                        break;
                     }
-                    else
-                    {
-                        MessageBox.Show(result.Messagee, "Unsuccessful");
-                    }
-                }
-                else if (result.StatusCode == (int)GenericStatusValue.NoInternetConnection)
-                {
-                    MessageBox.Show(MessageBoxMessage.NoInternetConnection, "Unsuccessful");
-                }
-                else if (result.StatusCode == (int)GenericStatusValue.HasErrorMessage)
-                {
+                case (int)GenericStatusValue.Success:
                     MessageBox.Show(result.Message, "Unsuccessful");
-                }
-                else
-                {
+                    break;
+
+                case (int)GenericStatusValue.NoInternetConnection:
+                    MessageBox.Show(MessageBoxMessage.NoInternetConnection, "Unsuccessful");
+                    break;
+
+                case (int)GenericStatusValue.HasErrorMessage:
+                    MessageBox.Show(((EntityBase)result).Message, "Unsuccessful");
+                    break;
+
+                default:
                     MessageBox.Show(MessageBoxMessage.UnknownErorr, "Unsuccessful");
-                }
+                    break;
             }
-            catch(Exception ex)
+        }
+
+        private string getCPUID()
+        {
+            var cpuInfo = "";
+            var managClass = new ManagementClass("win32_processor");
+            var managCollec = managClass.GetInstances();
+
+            foreach (var managObj in managCollec)
             {
-                string path =System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembl‌​y().Location);
-                path += "exception.txt";
-                using (var outputFile = new StreamWriter(path, false, Encoding.UTF8))
-                {
-                    outputFile.WriteLine(ex.StackTrace);
-                }
+                if (cpuInfo != "") continue;
+                cpuInfo = managObj.Properties["processorID"].Value.ToString();
+                break;
             }
-		}
 
-		private string getUniqueID(string drive)
-		{
-			if (drive == string.Empty)
-			{
-				//Find first drive
-				foreach (var compDrive in DriveInfo.GetDrives())
-				{
-					if (compDrive.IsReady)
-					{
-						drive = compDrive.RootDirectory.ToString();
-						break;
-					}
-				}
-			}
+            return cpuInfo;
+        }
 
-			if (drive.EndsWith(":\\"))
-			{
-				drive = drive.Substring(0, drive.Length - 2);
-			}
+        private string getUniqueID(string drive)
+        {
+            if (drive == string.Empty)
+                //Find first drive
+                foreach (var compDrive in DriveInfo.GetDrives())
+                    if (compDrive.IsReady)
+                    {
+                        drive = compDrive.RootDirectory.ToString();
+                        break;
+                    }
 
-			string volumeSerial = getVolumeSerial(drive);
-			string cpuID = getCPUID();
+            if (drive.EndsWith(":\\"))
+                drive = drive.Substring(0, drive.Length - 2);
 
-			return cpuID.Substring(13) + cpuID.Substring(1, 4) + volumeSerial + cpuID.Substring(4, 4);
-		}
+            var volumeSerial = getVolumeSerial(drive);
+            var cpuID = getCPUID();
 
-		private string getVolumeSerial(string drive)
-		{
-			ManagementObject disk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + drive + @":""");
-			disk.Get();
+            var substring = cpuID.Substring(13);
+            return $"{substring} {cpuID.Substring(1, 4)} {volumeSerial} {cpuID.Substring(4, 4)}";
+        }
 
-			string volumeSerial = disk["VolumeSerialNumber"].ToString();
-			disk.Dispose();
+        private string getVolumeSerial(string drive)
+        {
+            ManagementObject disk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + drive + @":""");
+            disk.Get();
 
-			return volumeSerial;
-		}
+            string volumeSerial = disk["VolumeSerialNumber"].ToString();
+            disk.Dispose();
 
-		private string getCPUID()
-		{
-			string cpuInfo = "";
-			ManagementClass managClass = new ManagementClass("win32_processor");
-			ManagementObjectCollection managCollec = managClass.GetInstances();
-
-			foreach (var managObj in managCollec)
-			{
-				if (cpuInfo == "")
-				{
-					cpuInfo = managObj.Properties["processorID"].Value.ToString();
-					break;
-				}
-			}
-
-			return cpuInfo;
-		}
-
-		public override void OnNavigatedTo(NavigationContext navigationContext)
-		{
-			base.OnNavigatedTo(navigationContext);
-
-			if (navigationContext.Parameters.Any(x => x.Key == NavigationConstants.MasterStoreModel))
-			{
-                this.MasterStore = null;
-                this.MasterStore = navigationContext.Parameters[NavigationConstants.MasterStoreModel] as MasterStoreItemModel;
-			}
-		}
-	}
+            return volumeSerial;
+        }
+    }
 }

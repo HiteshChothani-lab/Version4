@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UserManagement.Entity
+﻿namespace UserManagement.Entity
 {
     public class ManageUserRequestEntity
     {
         public string Id { get; set; }
+        public string MasterStoreId { get; set; }
+        public string RoomNumber { get; set; }
     }
 }

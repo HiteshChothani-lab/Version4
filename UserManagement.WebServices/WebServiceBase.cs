@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Polly;
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using UserManagement.Common.Constants;
+using NLog;
 
 namespace UserManagement.WebServices
 {
@@ -16,11 +15,11 @@ namespace UserManagement.WebServices
         protected HttpClient client;
 
         protected string BaseAddress { get; set; }
-
+        public Logger logger;
         private readonly Policy _policy;
         protected WebServiceBase(Action<HttpClient> httpClientModifier = null)
         {
-
+            logger = LogManager.GetCurrentClassLogger();
             //#if DEBUG
             //            BaseAddress = "https://tuco-app.herokuapp.com/api/windows/";
             //#else
@@ -28,9 +27,10 @@ namespace UserManagement.WebServices
             //#endif
             BaseAddress = "https://tuco-app.herokuapp.com/api/windows/";
 
+
             client = new HttpClient(new HttpClientHandler() { UseProxy = false, MaxRequestContentBufferSize = Int32.MaxValue, AutomaticDecompression = DecompressionMethods.None | DecompressionMethods.Deflate | DecompressionMethods.GZip });
 
-            httpClientModifier?.Invoke(this.client);
+            httpClientModifier?.Invoke(client);
 
             _policy = Policy
                 .Handle<Exception>()
@@ -38,7 +38,7 @@ namespace UserManagement.WebServices
                                    TimeSpan.FromMilliseconds((200 * retryAttempt)),
                     (exception, timeSpan, context) =>
                     {
-                        Debug.WriteLine(exception.ToString());
+                        logger.Error(exception);
                     }
                 );
 
@@ -93,7 +93,7 @@ namespace UserManagement.WebServices
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                logger.Error(ex);
             }
 
             return result;

@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using UserManagement.Common.Constants;
-using UserManagement.Common.Converters;
 using UserManagement.Common.Enums;
 using UserManagement.Common.Utilities;
 using UserManagement.Entity;
@@ -16,94 +13,77 @@ namespace UserManagement.Manager
 {
     public class WindowsManager : ManagerBase, IWindowsManager
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IWindowsWebService _windowsWebService;
 
-        public WindowsManager(IConnectivity connectivity, IServiceEntityMapper mapper, IWindowsWebService windowsWebService) : base(connectivity, mapper)
+        public WindowsManager(
+            IConnectivity connectivity,
+            IServiceEntityMapper mapper,
+            IWindowsWebService windowsWebService) : base(connectivity, mapper)
         {
             _windowsWebService = windowsWebService;
         }
 
         public async Task<ValidateUserResponseEntity> ValidateUser(ValidateUserRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"User: {reqEntity.Username}");
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new ValidateUserResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<ValidateUserRequestContract>(reqEntity);
 
             var respContract = await _windowsWebService.ValidateUser(reqContract);
             var respEntity = Mapper.Map<ValidateUserResponseEntity>(respContract);
 
-            if (respEntity.StatusCode == (int)GenericStatusValue.Success)
-            {
-                respEntity.Username = reqEntity.Username;
-                respEntity.AccessCode = reqEntity.AccessCode;
+            if (respEntity.StatusCode != (int)GenericStatusValue.Success) return respEntity;
 
-                string json = JsonConvert.SerializeObject(respEntity);
-                json = CryptoEngine.Encrypt(json, Config.SymmetricKey);
+            respEntity.Username = reqEntity.Username;
+            respEntity.AccessCode = reqEntity.AccessCode;
 
-                using (var outputFile = new StreamWriter(Config.FilePath + "validated-user.json", false, Encoding.UTF8))
-                {
-                    outputFile.WriteLine(json);
-                }
+            var json = JsonConvert.SerializeObject(respEntity);
 
-                File.SetAttributes(Config.FilePath + "validated-user.json", FileAttributes.Hidden);
-            }
+            Config.SaveUserData(respEntity.Username, json);
 
             return respEntity;
         }
 
         public async Task<RegisterMasterStoreResponseEntity> RegisterMasterStore(RegisterMasterStoreRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.StoreName}");
+
             if (!Connectivity.IsInternetAvailable)
-            {
-                return new RegisterMasterStoreResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
+                return new RegisterMasterStoreResponseEntity()
+                { StatusCode = (int)GenericStatusValue.NoInternetConnection };
 
             var reqContract = Mapper.Map<RegisterMasterStoreRequestContract>(reqEntity);
 
             var respContract = await _windowsWebService.RegisterMasterStore(reqContract);
             var respEntity = Mapper.Map<RegisterMasterStoreResponseEntity>(respContract);
 
-            if (respEntity.StatusCode == (int)GenericStatusValue.Success)
-            {
-                respEntity.TimeZone = reqEntity.SelectedTimeZone;
-                string json = JsonConvert.SerializeObject(respEntity);
-                json = CryptoEngine.Encrypt(json, Config.SymmetricKey);
+            if (respEntity.StatusCode != (int)GenericStatusValue.Success) return respEntity;
 
-                using (var outputFile = new StreamWriter(Config.FilePath + "master-store.json", false, Encoding.UTF8))
-                {
-                    outputFile.WriteLine(json);
-                }
+            respEntity.TimeZone = reqEntity.SelectedTimeZone;
+            var json = JsonConvert.SerializeObject((object)respEntity);
 
-                File.SetAttributes(Config.FilePath + "master-store.json", FileAttributes.Hidden);
-            }
+            Config.SaveMasterDataLocal(respEntity.StoreId.ToString(), json);
 
             return respEntity;
         }
 
         public void Logout()
         {
-            string userPath = Config.FilePath + "validated-user.json";
-            if (File.Exists(userPath))
-            {
-                File.Delete(userPath);
-            }
+            logger.Log(LogLevel.Info, $"Logout");
+            Config.ClearMasterData();
+            Config.ClearUserData();
 
-            string storePath = Config.FilePath + "master-store.json";
-            if (File.Exists(storePath))
-            {
-                File.Delete(storePath);
-            }
         }
 
         public async Task<DefaultResponseEntity> CheckStoreUser(CheckUserRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.MasterStoreId}");
             if (!Connectivity.IsInternetAvailable)
-            {
-                return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
+                return new DefaultResponseEntity()
+                { StatusCode = (int)GenericStatusValue.NoInternetConnection };
 
             var reqContract = Mapper.Map<CheckUserRequestContract>(reqEntity);
 
@@ -113,16 +93,16 @@ namespace UserManagement.Manager
             return respEntity;
         }
 
-        public async Task<DefaultResponseEntity> SaveUserData(SaveUserDataRequestEntity reqEntity)
+        public async Task<DefaultResponseEntity> SaveUserData(SaveUserDataRequestEntity reqEntity, bool Dummy)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.StoreId}");
             if (!Connectivity.IsInternetAvailable)
-            {
-                return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
+                return new DefaultResponseEntity()
+                { StatusCode = (int)GenericStatusValue.NoInternetConnection };
 
             var reqContract = Mapper.Map<SaveUserDataRequestContract>(reqEntity);
 
-            var respContract = await _windowsWebService.SaveUserData(reqContract);
+            var respContract = await _windowsWebService.SaveUserData(reqContract, Dummy);
             var respEntity = Mapper.Map<DefaultResponseEntity>(respContract);
 
             return respEntity;
@@ -130,10 +110,9 @@ namespace UserManagement.Manager
 
         public async Task<StoreUsersResponseEntity> GetStoreUsers(GetStoreUsersRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.StoreId}");
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new StoreUsersResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<GetStoreUsersRequestContract>(reqEntity);
 
@@ -143,16 +122,15 @@ namespace UserManagement.Manager
             return respEntity;
         }
 
-        public async Task<ArchieveStoreUsersResponseEntity> GetArchieveStoreUsers(GetStoreUsersRequestEntity reqEntity)
+        public async Task<ArchieveStoreUsersResponseEntity> GetArchiveStoreUsers(GetStoreUsersRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.StoreId}");
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new ArchieveStoreUsersResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<GetStoreUsersRequestContract>(reqEntity);
 
-            var respContract = await _windowsWebService.GetArchieveStoreUsers(reqContract);
+            var respContract = await _windowsWebService.GetArchiveStoreUsers(reqContract);
             var respEntity = Mapper.Map<ArchieveStoreUsersResponseEntity>(respContract);
 
             return respEntity;
@@ -160,10 +138,9 @@ namespace UserManagement.Manager
 
         public async Task<DefaultResponseEntity> DeleteStoreUser(DeleteStoreUserRequestEntity reqEntity)
         {
+            logger.Log(LogLevel.Info, $"Store: {reqEntity.MasterStoreId}");
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<DeleteStoreUserRequestContract>(reqEntity);
 
@@ -176,9 +153,7 @@ namespace UserManagement.Manager
         public async Task<DefaultResponseEntity> ManageUser(ManageUserRequestEntity reqEntity)
         {
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<ManageUserRequestContract>(reqEntity);
 
@@ -191,9 +166,7 @@ namespace UserManagement.Manager
         public async Task<DefaultResponseEntity> CheckIDRArchiveUser(ManageUserRequestEntity reqEntity)
         {
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<ManageUserRequestContract>(reqEntity);
 
@@ -206,9 +179,7 @@ namespace UserManagement.Manager
         public async Task<DefaultResponseEntity> CheckIDRStoreUser(ManageUserRequestEntity reqEntity)
         {
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<ManageUserRequestContract>(reqEntity);
 
@@ -221,9 +192,7 @@ namespace UserManagement.Manager
         public async Task<DefaultResponseEntity> DeleteArchiveUser(DeleteArchiveUserRequestEntity reqEntity)
         {
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<DeleteArchiveUserRequestContract>(reqEntity);
 
@@ -233,12 +202,22 @@ namespace UserManagement.Manager
             return respEntity;
         }
 
+        public async Task<DefaultResponseEntity> SetRoomNumber(ManageUserRequestEntity user)
+        {
+            if (!Connectivity.IsInternetAvailable)
+                return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
+
+            var reqContract = Mapper.Map<ManageUserRequestContract>(user);
+
+            var respContract = await _windowsWebService.SetRoomNumber(reqContract);
+            var respEntity = Mapper.Map<DefaultResponseEntity>(respContract);
+
+            return respEntity;
+        }
         public async Task<DefaultResponseEntity> EditStoreUser(EditStoreUserRequestEntity reqEntity)
         {
             if (!Connectivity.IsInternetAvailable)
-            {
                 return new DefaultResponseEntity() { StatusCode = (int)GenericStatusValue.NoInternetConnection };
-            }
 
             var reqContract = Mapper.Map<EditStoreUserRequestContract>(reqEntity);
 

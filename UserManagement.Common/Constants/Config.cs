@@ -6,61 +6,113 @@ using UserManagement.Common.Converters;
 
 namespace UserManagement.Common.Constants
 {
+    public struct Keys
+    {
+        public const string SymmetricKey = "723FFEB59C2BB844";
+    }
+
+    public interface IConfig
+    {
+        CurrentUser CurrentUser { get; }
+        MasterStore MasterStore { get; }
+        void ClearMasterData();
+        void ClearUserData();
+        bool SaveMasterData(string storeID, string data);
+        bool SaveUserData(string UserName, string json);
+    }
+
     public static class Config
     {
-        public static readonly string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Version4-");
-        public static readonly string SymmetricKey = "723FFEB59C2BB844";
+        private const string MasterStoreJson = "master-store.data";
+        private const string ValidatedUserJson = "validated-user.data";
+        private const string Version4 = "Version4-";
+        public static readonly string AppVersionName = "Version 4";
+        public static readonly string AppPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TUCO");
+        public static string FilePath = Path.Combine(AppPath, Version4);
+        public static CurrentUser CurrentUser => _currentUser ?? (_currentUser = GetLocalUser());
+        public static MasterStore MasterStore => _masterStore ?? (_masterStore = GetLocalMasterStore());
 
-        private static CurrentUser currentUser;
-        public static CurrentUser CurrentUser
+        private static CurrentUser _currentUser = GetLocalUser();
+        private static MasterStore _masterStore;
+
+        public static void ClearMasterData()
         {
-            get
+            var MasterFile = FilePath + MasterStoreJson;
+            if (File.Exists(MasterFile))
+                File.Delete(MasterFile);
+        }
+
+        public static void ClearUserData()
+        {
+            var UserFile = FilePath + ValidatedUserJson;
+            if (File.Exists(UserFile))
+                File.Delete(UserFile);
+        }
+
+        public static bool SaveMasterDataLocal(string storeID, string data)
+        {
+            var encryptData = CryptoEngine.Encrypt(data, Keys.SymmetricKey);
+
+            // Does the config folder not exist?
+            if (!Directory.Exists(AppPath))
+                Directory.CreateDirectory(AppPath); // Create the Config File Exmaple folder1
+
+            //todo need to consolidate the file names
+            using (var outputFile = new StreamWriter($"{FilePath}{MasterStoreJson}", false, Encoding.UTF8))
+                outputFile.WriteLine(encryptData);
+
+            if (FilePath != null)
+                File.SetAttributes($"{FilePath}{MasterStoreJson}", FileAttributes.Hidden);
+
+            return true;
+        }
+
+        public static bool SaveUserData(string UserName, string data)
+        {
+            var encryptData = CryptoEngine.Encrypt(data, Keys.SymmetricKey);
+            try
             {
-                if (currentUser == null)
-                    currentUser = GetLocalUser();
-                return currentUser;
+                // Does the config folder not exist?
+                if (!Directory.Exists(AppPath))
+                    Directory.CreateDirectory(AppPath); // Create the Config File Exmaple folder1
+
+                using (var outputFile = new StreamWriter($"{FilePath}{ValidatedUserJson}", false, Encoding.UTF8))
+                    outputFile.WriteLine(encryptData);
+
+                if (FilePath != null)
+                    File.SetAttributes($"{FilePath}{ValidatedUserJson}", FileAttributes.Hidden);
+
+                return true;
+            }
+            catch (IOException)
+            {
+                return false;
             }
         }
 
-        private static MasterStore masterStore;
-        public static MasterStore MasterStore
+        private static MasterStore GetLocalMasterStore()
         {
-            get
+            var masterPath = FilePath + MasterStoreJson;
+            if (!File.Exists(masterPath)) return null;
+
+            using (var reader = new StreamReader(masterPath, Encoding.UTF8))
             {
-                if (masterStore == null)
-                    masterStore = GetLocalMasterStore();
-                return masterStore;
+                var result = reader.ReadToEnd();
+                result = CryptoEngine.Decrypt(result, Keys.SymmetricKey);
+                return JsonConvert.DeserializeObject<MasterStore>(result);
             }
         }
 
         private static CurrentUser GetLocalUser()
         {
-            string userPath = FilePath + "validated-user.json";
-            if (File.Exists(userPath))
+            var userPath = FilePath + ValidatedUserJson;
+            if (!File.Exists(userPath)) return null;
+            using (var reader = new StreamReader(userPath, Encoding.UTF8))
             {
-                using (var reader = new StreamReader(userPath, Encoding.UTF8))
-                {
-                    string result = reader.ReadToEnd();
-                    result = CryptoEngine.Decrypt(result, SymmetricKey);
-                    return JsonConvert.DeserializeObject<CurrentUser>(result);
-                }
+                var result = reader.ReadToEnd();
+                result = CryptoEngine.Decrypt(result, Keys.SymmetricKey);
+                return JsonConvert.DeserializeObject<CurrentUser>(result);
             }
-            return null;
-        }
-
-        private static MasterStore GetLocalMasterStore()
-        {
-            string masterPath = FilePath + "master-store.json";
-            if (File.Exists(masterPath))
-            {
-                using (var reader = new StreamReader(masterPath, Encoding.UTF8))
-                {
-                    string result = reader.ReadToEnd();
-                    result = CryptoEngine.Decrypt(result, SymmetricKey);
-                    return JsonConvert.DeserializeObject<MasterStore>(result);
-                }
-            }
-            return null;
         }
     }
 
@@ -77,18 +129,19 @@ namespace UserManagement.Common.Constants
 
     public class MasterStore
     {
-        public long SuperMasterId { get; set; }
-        public long StoreId { get; set; }
-        public long UserId { get; set; }
-        public string StoreName { get; set; }
-        public string Phone { get; set; }
-        public string PostalCode { get; set; }
         public string Address { get; set; }
-        public string Street { get; set; }
         public string Country { get; set; }
         public long CountryCode { get; set; }
-        public string Status { get; set; }
         public string Messagee { get; set; }
+        public string Phone { get; set; }
+        public string PostalCode { get; set; }
+        public string Status { get; set; }
+        public long StoreId { get; set; }
+        public string StoreName { get; set; }
+        public string Street { get; set; }
+        public long SuperMasterId { get; set; }
         public TimeZoneInfo TimeZone { get; set; }
+        public long UserId { get; set; }
+        public string FacilityType { get; set; }
     }
 }

@@ -163,7 +163,7 @@ namespace UserManagement.UI.ViewModels
                         }
                     }
                 }
-                catch(Exception)  { }
+                catch (Exception) { }
             });
 
             #endregion
@@ -492,7 +492,7 @@ namespace UserManagement.UI.ViewModels
             reqEntity.Button4 = string.Empty;
 
             SetLoaderVisibility("Adding user...");
-            var result = await _windowsManager.SaveUserData(reqEntity);
+            var result = await _windowsManager.SaveUserData(reqEntity, false);
             if (result.StatusCode == (int)GenericStatusValue.Success)
             {
                 SetLoaderVisibility();
@@ -627,7 +627,8 @@ namespace UserManagement.UI.ViewModels
 
             var deleteResult = await _windowsManager.ManageUser(new ManageUserRequestEntity()
             {
-                Id = parameter.Id
+                Id = parameter.Id,
+                MasterStoreId = parameter.MasterStoreId
             });
 
             if (deleteResult.StatusCode == (int)GenericStatusValue.Success)
@@ -872,7 +873,8 @@ namespace UserManagement.UI.ViewModels
 
                 var idrResult = await _windowsManager.CheckIDRStoreUser(new ManageUserRequestEntity()
                 {
-                    Id = parameter.Id
+                    Id = parameter.Id,
+                    MasterStoreId = parameter.MasterStoreId
                 });
 
                 if (idrResult.StatusCode == (int)GenericStatusValue.Success)
@@ -910,7 +912,8 @@ namespace UserManagement.UI.ViewModels
 
                 var idrResult = await _windowsManager.CheckIDRArchiveUser(new ManageUserRequestEntity()
                 {
-                    Id = parameter.Id
+                    Id = parameter.Id,
+                    MasterStoreId = parameter.MasterStoreId
                 });
 
                 if (idrResult.StatusCode == (int)GenericStatusValue.Success)
@@ -1054,7 +1057,7 @@ namespace UserManagement.UI.ViewModels
 
         private async Task GetArchieveStoreUsers()
         {
-            var result = await _windowsManager.GetArchieveStoreUsers(new GetStoreUsersRequestEntity()
+            var result = await _windowsManager.GetArchiveStoreUsers(new GetStoreUsersRequestEntity()
             {
                 StoreId = Config.MasterStore.StoreId,
                 SuperMasterId = Config.MasterStore.UserId,

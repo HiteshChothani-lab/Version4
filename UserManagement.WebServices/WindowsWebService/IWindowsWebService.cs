@@ -7,11 +7,11 @@ namespace UserManagement.WebServices
     public interface IWindowsWebService
     {
         Task<ValidateUserResponseContract> ValidateUser(ValidateUserRequestContract reqContract);
-		Task<RegisterMasterStoreResponseContract> RegisterMasterStore(RegisterMasterStoreRequestContract reqContract);
+        Task<RegisterMasterStoreResponseContract> RegisterMasterStore(RegisterMasterStoreRequestContract reqContract);
         Task<DefaultResponseContract> CheckStoreUser(CheckUserRequestContract reqContract);
-        Task<DefaultResponseContract> SaveUserData(SaveUserDataRequestContract reqContract);
+        Task<DefaultResponseContract> SaveUserData(SaveUserDataRequestContract reqContract, bool Dummy);
         Task<StoreUsersResponseContract> GetStoreUsers(GetStoreUsersRequestContract reqContract);
-        Task<ArchieveStoreUsersResponseContract> GetArchieveStoreUsers(GetStoreUsersRequestContract reqContract);
+        Task<ArchieveStoreUsersResponseContract> GetArchiveStoreUsers(GetStoreUsersRequestContract reqContract);
         Task<DefaultResponseContract> DeleteStoreUser(DeleteStoreUserRequestContract reqContract);
         Task<DefaultResponseContract> ManageUser(ManageUserRequestContract reqContract);
         Task<DefaultResponseContract> CheckIDRArchiveUser(ManageUserRequestContract reqContract);
@@ -21,6 +21,7 @@ namespace UserManagement.WebServices
         Task<DefaultResponseContract> UpdateNonMobileUser(UpdateNonMobileStoreUserRequestContract reqContract);
         Task<DefaultResponseContract> MoveStoreUser(MoveStoreUserRequestContract reqContract);
         Task<DefaultResponseContract> UpdateButtons(UpdateButtonsRequestContract reqEntity);
+        Task<DefaultResponseContract> SetRoomNumber(ManageUserRequestContract reqContract);
         Task<DefaultResponseContract> SetUnsetFlag(SetUnsetFlagRequestContract reqContract);
     }
 }

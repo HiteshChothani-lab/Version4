@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using Prism.Regions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Common.Constants;
@@ -12,14 +11,15 @@ namespace UserManagement.UI.ViewModels
 	{
 		public RegisterMasterStore2PageViewModel(IRegionManager regionManager) : base(regionManager)
 		{
-			this.BackCommand = new DelegateCommand(() => ExecuteBackCommand());
-			this.SubmitCommand = new DelegateCommand(() => ExecuteSubmitCommand(),
-				() => !string.IsNullOrEmpty(this.StoreName) && !string.IsNullOrEmpty(this.PhoneNumber) &&
-				!string.IsNullOrEmpty(this.Street) && !string.IsNullOrEmpty(this.Address))
-				.ObservesProperty(() => this.StoreName)
-				.ObservesProperty(() => this.PhoneNumber)
-				.ObservesProperty(() => this.Street)
-				.ObservesProperty(() => this.Address);
+			BackCommand = new DelegateCommand(() => ExecuteBackCommand());
+			SubmitCommand = new DelegateCommand(() => ExecuteSubmitCommand(),
+				() => !string.IsNullOrEmpty(StoreName) && !string.IsNullOrEmpty(PhoneNumber) &&
+				!string.IsNullOrEmpty(Street) && !string.IsNullOrEmpty(Address))
+				.ObservesProperty(() => StoreName)
+				.ObservesProperty(() => SelectedFacilityType)
+				.ObservesProperty(() => PhoneNumber)
+				.ObservesProperty(() => Street)
+				.ObservesProperty(() => Address);
 
 			FacilityTypes = new List<FacilityType>()
 			{
@@ -83,22 +83,24 @@ namespace UserManagement.UI.ViewModels
 
 		private void ExecuteBackCommand()
 		{
-			this.RegionNavigationService.Journal.CurrentEntry.Parameters.Add(NavigationConstants.MasterStoreModel, MasterStore);
-			this.RegionNavigationService.Journal.GoBack();
+			RegionNavigationService.Journal.CurrentEntry.Parameters.Add(NavigationConstants.MasterStoreModel, MasterStore);
+			RegionNavigationService.Journal.GoBack();
 		}
 
 		private void ExecuteSubmitCommand()
 		{
-			this.MasterStore.StoreName = this.StoreName;
-			this.MasterStore.PhoneNumber = this.PhoneNumber;
-			this.MasterStore.Address = this.Address;
-			this.MasterStore.Street = this.Street;
+			MasterStore.StoreName = StoreName;
+			MasterStore.FacilityType = SelectedFacilityType.Value;
+			MasterStore.PhoneNumber = PhoneNumber;
+			MasterStore.Address = Address;
+			MasterStore.Street = Street;
 
-			var parameters = new NavigationParameters();
-			parameters.Add(NavigationConstants.MasterStoreModel, this.MasterStore);
-			this.RegionManager.RequestNavigate("ContentRegion", ViewNames.RegisterMasterStoreReviewPage, parameters);
+			var parameters = new NavigationParameters
+			{
+				{ NavigationConstants.MasterStoreModel, MasterStore }
+			};
+			RegionManager.RequestNavigate("ContentRegion", ViewNames.RegisterMasterStoreReviewPage, parameters);
 		}
-
 
 		public override void OnNavigatedTo(NavigationContext navigationContext)
 		{
@@ -106,21 +108,14 @@ namespace UserManagement.UI.ViewModels
 
 			if (navigationContext.Parameters.Any(x => x.Key == NavigationConstants.MasterStoreModel))
 			{
-				this.MasterStore = navigationContext.Parameters[NavigationConstants.MasterStoreModel] as MasterStoreItemModel;
+				MasterStore = navigationContext.Parameters[NavigationConstants.MasterStoreModel] as MasterStoreItemModel;
 			}
 #if DEBUG
-            this.StoreName = "Mac77";
-            this.PhoneNumber = "7777777777";
-            this.Street = "700";
-            this.Address = "Street77";
+			StoreName = "Mac77";
+			PhoneNumber = "7777777777";
+			Street = "700";
+			Address = "Street77";
 #endif
-        }
-
-		public class FacilityType
-		{
-			public int ID { get; set; }
-			public string DisplayName { get; set; }
-			public string Value { get; set; }
 		}
 	}
 }

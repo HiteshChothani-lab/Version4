@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UserManagement.WebServices.DataContracts.Request
+﻿namespace UserManagement.WebServices.DataContracts.Request
 {
 	public class RegisterMasterStoreRequestContract
 	{
-        public long SuperMasterId { get; set; }
-        public string UserId { get; set; }
+		public long SuperMasterId { get; set; }
+		public string UserId { get; set; }
 		public string StoreName { get; set; }
 		public string PhoneNumber { get; set; }
 		public string Street { get; set; }
@@ -19,11 +13,12 @@ namespace UserManagement.WebServices.DataContracts.Request
 		public string State { get; set; }
 		public string Country { get; set; }
 		public long CountryCode { get; set; }
-		public string StorePrefferedLanguage { get; set; }
+		public string StorePreferedLanguage { get; set; }
+		public string FacilityType { get; set; }
 		public string AppVersionName { get; set; }
 		public string DeviceToken { get; set; }
 		public string DeviceId { get; set; }
-        public string TimeZone { get; set; }
-        public string DeviceType { get; set; }
+		public string TimeZone { get; set; }
+		public string DeviceType { get; set; }
 	}
 }
