@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UserManagement.Entity
 {
@@ -11,6 +7,7 @@ namespace UserManagement.Entity
 		public long SuperMasterId { get; set; }
 		public long StoreId { get; set; }
 		public long UserId { get; set; }
+		public string FacilityType { get; set; }
 		public string StoreName { get; set; }
 		public string Phone { get; set; }
 		public string PostalCode { get; set; }

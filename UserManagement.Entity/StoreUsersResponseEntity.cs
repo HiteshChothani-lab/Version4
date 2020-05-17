@@ -191,7 +191,7 @@ namespace UserManagement.Entity
         {
             get
             {
-                if (RegType.Equals("Express"))
+                if (RegType.Equals("Express") && Config.MasterStore.FacilityType.Equals("Clinic"))
                 {
                     if ("late".Equals(TimeDifference))
                     {
@@ -208,12 +208,12 @@ namespace UserManagement.Entity
 
         public bool IsYellowNeedleVisible
         {
-            get => this.Btn3.Contains("No deals ") || this.Btn3.Contains("Terrible Service");
+            get => this.Btn3.Contains("Flu Shot ") || this.Btn3.Contains("Other Vaccines");
         }
 
         public bool IsGreenNeedleVisible
         {
-            get => this.Btn3.Contains("No deals ") || this.Btn3.Contains("No Deals") || this.Btn3.Contains("Very Terrible");
+            get => this.Btn3.Contains("Flu Shot ") || this.Btn3.Contains("Flu Shot") || this.Btn3.Contains("Vaccination");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

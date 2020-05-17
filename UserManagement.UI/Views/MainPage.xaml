@@ -59,8 +59,8 @@
 
                 <Grid Grid.Column="6">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <Button Margin="0,0,2,0"
@@ -68,9 +68,10 @@
                         Content="ADD" />
 
                     <Button Grid.Column="1"
-                        Margin="2,0,0,0"
+                        Padding="10,0,10,0"
                         Command="{Binding ExpressUserCommand}"
-                        Content="EXP" />
+                        Content="EXP"
+                        Visibility="{Binding IsExpressEnable, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}"/>
                 </Grid>
 
                 <Button Grid.Row="1"
@@ -96,8 +97,8 @@
                         Content="REFRESH" 
                         Visibility="Visible"/>
 
-                <Grid Grid.Row="2"
-                      Grid.ColumnSpan="7">
+                <Grid Grid.Row="2" Grid.ColumnSpan="7" 
+                      Visibility="{Binding IsAppointmentEnable, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -136,7 +137,7 @@
                                       HorizontalAlignment="Center">
                                         <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
-                                               Text="Very Good" />
+                                               Text="New Case" />
                                     </Grid>
                                 </ToggleButton.Content>
                             </ToggleButton>
@@ -153,21 +154,20 @@
                                       HorizontalAlignment="Center">
                                         <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
-                                               Text="Indifferent" />
+                                               Text="Follow Up" />
                                     </Grid>
                                 </ToggleButton.Content>
                             </ToggleButton>
                         </Grid>
-                        
-                        <Grid Grid.Row="1"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2">
+
+                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="90" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="110" />
                             </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="1">
+                            <Grid Grid.Column="1"
+                                  Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                                 <ToggleButton Margin="5,5"
                                           HorizontalContentAlignment="Stretch"
                                           IsChecked="{Binding IsCheckedVeryTerrible}"
@@ -183,7 +183,7 @@
 
                                             <TextBlock VerticalAlignment="Center"
                                                    FontSize="14"
-                                                   Text="Very Terrible"
+                                                   Text="Vaccination"
                                                    TextWrapping="Wrap" />
 
                                             <Image Grid.Column="1"
@@ -235,7 +235,7 @@
 
                                     <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
-                                               Text="No Deal"
+                                               Text="Flu Shot"
                                                TextWrapping="Wrap" />
 
                                     <Image Grid.Column="1"
@@ -275,7 +275,7 @@
 
                                     <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
-                                               Text="Terrible Service"
+                                               Text="Other Vaccines"
                                                TextWrapping="Wrap" />
 
                                     <Image Grid.Column="1"
@@ -324,7 +324,7 @@
                                     <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                FontSize="10"
-                                               Text="No Deal Terrible Service"
+                                               Text="Flu Shot &amp; Other Vaccines"
                                                TextWrapping="Wrap" />
 
                                     <Image Grid.Column="2"

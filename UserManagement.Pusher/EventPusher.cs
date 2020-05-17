@@ -1,5 +1,6 @@
 ﻿using Prism.Events;
 using PusherClient;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UserManagement.Common.Constants;
 using UserManagement.Common.Enums;
@@ -129,18 +130,22 @@ namespace UserManagement.Pushers
 
         public static async Task Dispose()
         {
-            _eventChannel.UnbindAll();
-            _eventChannel.Unsubscribe();
-            _pusher.UnbindAll();
+            if (_eventChannel != null)
+            {
+                _eventChannel.UnbindAll();
+                _eventChannel.Unsubscribe();
+                _eventChannel.Subscribed -= ChatChannel_Subscribed;
+                _eventChannel = null;
+            }
 
-            _eventChannel.Subscribed -= ChatChannel_Subscribed;
-            _pusher.ConnectionStateChanged -= _pusher_ConnectionStateChanged;
-            _pusher.Error -= _pusher_Error;
-
-            await _pusher.DisconnectAsync();
-
-            _eventChannel = null;
-            _pusher = null;
+            if (_pusher != null)
+            {
+                _pusher.UnbindAll();
+                _pusher.ConnectionStateChanged -= _pusher_ConnectionStateChanged;
+                _pusher.Error -= _pusher_Error;
+                await _pusher.DisconnectAsync();
+                _pusher = null;
+            }
         }
     }
 }

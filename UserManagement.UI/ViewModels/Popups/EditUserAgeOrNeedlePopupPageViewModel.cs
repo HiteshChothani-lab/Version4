@@ -103,6 +103,11 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _isCheckedVeryTerribleNone, value);
         }
 
+        public bool IsVaccinationVisible
+        {
+            get => Config.MasterStore.FacilityType.Equals("Clinic");
+        }
+
         private bool IsSelectedStoreUser = false;
 
         public DelegateCommand CancelCommand { get; private set; }
@@ -118,7 +123,7 @@ namespace UserManagement.UI.ViewModels
         {
             if (!this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
             {
-                MessageBox.Show("You must make a selection for very Good or indifferent or both.", "Required.");
+                MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
                 return;
             }
 
@@ -134,33 +139,33 @@ namespace UserManagement.UI.ViewModels
 
             if (this.IsCheckedVeryGood)
             {
-                reqEntity.Button1 = "Very Good";
+                reqEntity.Button1 = "New Case";
             }
 
             reqEntity.Button2 = string.Empty;
 
             if (this.IsCheckedIndifferent)
             {
-                reqEntity.Button2 = "Indifferent";
+                reqEntity.Button2 = "Follow Up";
             }
 
-            reqEntity.Button3 = string.Empty; //"Very Terrible";
+            reqEntity.Button3 = string.Empty; //"Vaccination";
 
             if (this.IsCheckedVeryTerribleNone)
             {
-                reqEntity.Button3 = "Very Terrible";
+                reqEntity.Button3 = "Vaccination";
             }
             else if (this.IsCheckedVeryTerribleNoneDeal)
             {
-                reqEntity.Button3 = "No Deals";
+                reqEntity.Button3 = "Flu Shot";
             }
             else if (this.IsCheckedVeryTerribleTerribleService)
             {
-                reqEntity.Button3 = "Terrible Service";
+                reqEntity.Button3 = "Other Vaccines";
             }
             else if (this.IsCheckedVeryTerribleNoneDealTerribleService)
             {
-                reqEntity.Button3 = "No deals & Terrible Service";
+                reqEntity.Button3 = "Flu Shot & Other Vaccines";
             }
 
             var result = await _windowsManager.UpdateButtons(reqEntity);
@@ -266,23 +271,23 @@ namespace UserManagement.UI.ViewModels
                 IsSelectedStoreUser = isSelectedStoreUser;
             }
 
-            this.IsCheckedVeryGood = SelectedStoreUser.Btn1.Equals("Very Good");
-            this.IsCheckedIndifferent = SelectedStoreUser.Btn2.Equals("Indifferent");
+            this.IsCheckedVeryGood = SelectedStoreUser.Btn1.Equals("New Case");
+            this.IsCheckedIndifferent = SelectedStoreUser.Btn2.Equals("Follow Up");
             this.IsCheckedVeryTerrible = !string.IsNullOrWhiteSpace(SelectedStoreUser.Btn3);
 
-            if (SelectedStoreUser.Btn3.Equals("Very Terrible"))
+            if (SelectedStoreUser.Btn3.Equals("Vaccination"))
             {
                 this.IsCheckedVeryTerribleNone = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("No Deals"))
+            else if (SelectedStoreUser.Btn3.Equals("Flu Shot"))
             {
                 this.IsCheckedVeryTerribleNoneDeal = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("Terrible Service"))
+            else if (SelectedStoreUser.Btn3.Equals("Other Vaccines"))
             {
                 this.IsCheckedVeryTerribleTerribleService = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("No deals "))
+            else if (SelectedStoreUser.Btn3.Equals("Flu Shot "))
             {
                 this.IsCheckedVeryTerribleNoneDealTerribleService = true;
             }

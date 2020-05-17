@@ -135,8 +135,11 @@ namespace UserManagement.UI.ViewModels
             this.ArchiveIDCheckedCommand = new DelegateCommand<StoreUserEntity>(async (user) => await ExecuteArchiveIDCheckedCommand(user));
             this.UserDetailWindowCommand = new DelegateCommand<StoreUserEntity>((user) => ExecuteUserDetailWindowCommand(user));
 
-            UpdateExpressTime = new Timer(60000); /* 60000 Millisecond = 1 Minute (Interval) */
-            UpdateExpressTime.Elapsed += UpdateExpressTime_Elapsed;
+            if (IsExpressEnable)
+            {
+                UpdateExpressTime = new Timer(60000); /* 60000 Millisecond = 1 Minute (Interval) */
+                UpdateExpressTime.Elapsed += UpdateExpressTime_Elapsed;
+            }
 
             #region Pusher Events Subscribe
 
@@ -172,9 +175,12 @@ namespace UserManagement.UI.ViewModels
         private void ExecuteLogoutCommand()
         {
             _windowsManager.Logout();
-            UpdateExpressTime.Stop();
-            UpdateExpressTime.Elapsed -= UpdateExpressTime_Elapsed;
-            UpdateExpressTime.Dispose();
+            if (IsExpressEnable)
+            {
+                UpdateExpressTime.Stop();
+                UpdateExpressTime.Elapsed -= UpdateExpressTime_Elapsed;
+                UpdateExpressTime.Dispose();
+            }
             System.Windows.Application.Current.Shutdown();
         }
 
@@ -305,6 +311,21 @@ namespace UserManagement.UI.ViewModels
             }
         }
 
+        public bool IsVaccinationVisible
+        {
+            get => Config.MasterStore.FacilityType.Equals("Clinic");
+        }
+
+        public bool IsExpressEnable
+        {
+            get => Config.MasterStore.FacilityType.Equals("Clinic");
+        }
+
+        public bool IsAppointmentEnable
+        {
+            get => !Config.MasterStore.FacilityType.Equals("Test Center");
+        }
+
         private UserDetailsPage userDetailsPage;
 
         public DelegateCommand NonMobileUserCommand { get; private set; }
@@ -420,19 +441,21 @@ namespace UserManagement.UI.ViewModels
                 }
             }
 
-            if (!this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
+            if (IsAppointmentEnable && !this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
             {
-                MessageBox.Show("You must make a selection for very Good or indifferent or both.", "Required.");
+                MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
                 return;
             }
 
-            var reqEntity = new SaveUserDataRequestEntity();
-            reqEntity.Action = "master";
-            reqEntity.FirstName = this.FirstName;
-            reqEntity.LastName = this.LastName;
-            reqEntity.CountryCode = Config.MasterStore.CountryCode;
-            reqEntity.StoreId = Config.MasterStore.StoreId;
-            reqEntity.SuperMasterId = Config.MasterStore.UserId;
+            var reqEntity = new SaveUserDataRequestEntity
+            {
+                Action = "master",
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                CountryCode = Config.MasterStore.CountryCode,
+                StoreId = Config.MasterStore.StoreId,
+                SuperMasterId = Config.MasterStore.UserId
+            };
 
             if (!isMobileUser)
             {
@@ -462,31 +485,31 @@ namespace UserManagement.UI.ViewModels
 
             if (this.IsCheckedVeryGood)
             {
-                reqEntity.Button1 = "Very Good";
+                reqEntity.Button1 = "New Case";
             }
 
             reqEntity.Button2 = string.Empty;
 
             if (this.IsCheckedIndifferent)
             {
-                reqEntity.Button2 = "Indifferent";
+                reqEntity.Button2 = "Follow Up";
             }
 
             if (this.IsCheckedVeryTerribleNone)
             {
-                reqEntity.Button3 = "Very Terrible";
+                reqEntity.Button3 = "Vaccination";
             }
             else if (this.IsCheckedVeryTerribleNoneDeal)
             {
-                reqEntity.Button3 = "No Deals";
+                reqEntity.Button3 = "Flu Shot";
             }
             else if (this.IsCheckedVeryTerribleTerribleService)
             {
-                reqEntity.Button3 = "Terrible Service";
+                reqEntity.Button3 = "Other Vaccines";
             }
             else if (this.IsCheckedVeryTerribleNoneDealTerribleService)
             {
-                reqEntity.Button3 = "No deals & Terrible Service";
+                reqEntity.Button3 = "Flu Shot & Other Vaccines";
             }
 
             reqEntity.Button4 = string.Empty;
@@ -756,22 +779,32 @@ namespace UserManagement.UI.ViewModels
 
         private void ExecuteEditAgeOrNeedleUserCommand(StoreUserEntity user)
         {
-            _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
-            var parameters = new NavigationParameters();
-            parameters.Add(NavigationConstants.SelectedStoreUser, user);
-            parameters.Add(NavigationConstants.Action, "update_non_mobile");
-            parameters.Add(NavigationConstants.IsSelectedStoreUser, true);
-            this.RegionManager.RequestNavigate("PopupRegion", ViewNames.EditUserAgeOrNeedlePopupPage, parameters);
+            if (IsAppointmentEnable)
+            {
+                _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
+                var parameters = new NavigationParameters
+                {
+                    { NavigationConstants.SelectedStoreUser, user },
+                    { NavigationConstants.Action, "update_non_mobile" },
+                    { NavigationConstants.IsSelectedStoreUser, true }
+                };
+                this.RegionManager.RequestNavigate("PopupRegion", ViewNames.EditUserAgeOrNeedlePopupPage, parameters);
+            }
         }
 
         private void ExecuteEditArchiveAgeOrNeedleUserCommand(StoreUserEntity user)
         {
-            _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
-            var parameters = new NavigationParameters();
-            parameters.Add(NavigationConstants.SelectedStoreUser, user);
-            parameters.Add(NavigationConstants.Action, "update_non_mobile");
-            parameters.Add(NavigationConstants.IsSelectedStoreUser, false);
-            this.RegionManager.RequestNavigate("PopupRegion", ViewNames.EditUserAgeOrNeedlePopupPage, parameters);
+            if (IsAppointmentEnable)
+            {
+                _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
+                var parameters = new NavigationParameters
+                {
+                    { NavigationConstants.SelectedStoreUser, user },
+                    { NavigationConstants.Action, "update_non_mobile" },
+                    { NavigationConstants.IsSelectedStoreUser, false }
+                };
+                this.RegionManager.RequestNavigate("PopupRegion", ViewNames.EditUserAgeOrNeedlePopupPage, parameters);
+            }
         }
 
         private void ExecuteExpressUserCommand()
@@ -797,7 +830,7 @@ namespace UserManagement.UI.ViewModels
 
             if (!this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
             {
-                MessageBox.Show("You must make a selection for very Good or indifferent or both.", "Required.");
+                MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
                 return;
             }
 
@@ -984,14 +1017,15 @@ namespace UserManagement.UI.ViewModels
             try
             {
                 this.LoaderVisibility = Visibility.Visible;
-                if (UpdateExpressTime.Enabled) UpdateExpressTime.Stop();
+
+                if (IsExpressEnable && UpdateExpressTime.Enabled) UpdateExpressTime.Stop();
 
                 await Task.WhenAll(GetStoreUsers());
                 await Task.WhenAll(GetArchieveStoreUsers());
             }
             catch
             {
-                if (!UpdateExpressTime.Enabled) UpdateExpressTime.Start();
+                if (IsExpressEnable && !UpdateExpressTime.Enabled) UpdateExpressTime.Start();
             }
             finally
             {
@@ -1075,17 +1109,20 @@ namespace UserManagement.UI.ViewModels
                 }
             }
 
-            if (this.ArchieveStoreUsers != null && this.ArchieveStoreUsers.Count > 0 &&
-                        this.ArchieveStoreUsers.Any(a => a.RegType.Equals("Express")))
+            if (IsExpressEnable)
             {
-                if (this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("early")) ||
-                    this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("ready")))
+                if (this.ArchieveStoreUsers != null && this.ArchieveStoreUsers.Count > 0 &&
+                            this.ArchieveStoreUsers.Any(a => a.RegType.Equals("Express")))
                 {
-                    if (!UpdateExpressTime.Enabled) UpdateExpressTime.Start();
-                }
-                else
-                {
-                    if (UpdateExpressTime.Enabled) UpdateExpressTime.Stop();
+                    if (this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("early")) ||
+                        this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("ready")))
+                    {
+                        if (!UpdateExpressTime.Enabled) UpdateExpressTime.Start();
+                    }
+                    else
+                    {
+                        if (UpdateExpressTime.Enabled) UpdateExpressTime.Stop();
+                    }
                 }
             }
         }
