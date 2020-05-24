@@ -104,6 +104,13 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _gender, value);
         }
 
+        private string _roomNumber;
+        public string RoomNumber
+        {
+            get => _roomNumber;
+            set => SetProperty(ref _roomNumber, value);
+        }
+
         private string _homePhone;
         public string HomePhone
         {
@@ -282,6 +289,7 @@ namespace UserManagement.UI.ViewModels
                 this.LastName = this.SelectedStoreUser.Lastname;
                 this.HomePhone = this.SelectedStoreUser.HomePhone;
                 this.PostalCode = this.SelectedStoreUser.PostalCode;
+                this.RoomNumber = selectedStoreUser.RoomNumber;
                 this.DOB = Convert.ToDateTime(this.SelectedStoreUser.DOB);
                 this.Gender = this.SelectedStoreUser.Gender;
             }

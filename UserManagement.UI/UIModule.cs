@@ -60,6 +60,7 @@ namespace UserManagement.UI
             containerRegistry.RegisterForNavigation<EditUserAgeOrNeedlePopupPage>();
             containerRegistry.RegisterForNavigation<UpdateNonMobileUserPopupPage>();
             containerRegistry.RegisterForNavigation<MoveUserPopupPage>();
+            containerRegistry.RegisterForNavigation<SetRoomNumberPopUpPage>();
             containerRegistry.RegisterForNavigation<ExpressTimePickerPopupPage>();
         }
     }

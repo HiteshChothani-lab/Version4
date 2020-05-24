@@ -74,6 +74,11 @@ namespace UserManagement.UI.ViewModels
                 }
             });
 
+            _eventAggregator.GetEvent<SetRoomNumberSubmitEvent>().Subscribe((room) =>
+            {
+                _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(false);
+            });
+
             _eventAggregator.GetEvent<MoveStoreUserSubmitEvent>().Subscribe(async (user) =>
                 {
                     _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(false);
@@ -134,6 +139,7 @@ namespace UserManagement.UI.ViewModels
             this.StoreIDCheckedCommand = new DelegateCommand<StoreUserEntity>(async (user) => await ExecuteStoreIDCheckedCommand(user));
             this.ArchiveIDCheckedCommand = new DelegateCommand<StoreUserEntity>(async (user) => await ExecuteArchiveIDCheckedCommand(user));
             this.UserDetailWindowCommand = new DelegateCommand<StoreUserEntity>((user) => ExecuteUserDetailWindowCommand(user));
+            this.SetRoomNumberCommand = new DelegateCommand<StoreUserEntity>(ExecuteSetRoomNumberCommand);
 
             if (IsExpressEnable)
             {
@@ -347,6 +353,7 @@ namespace UserManagement.UI.ViewModels
         public DelegateCommand<StoreUserEntity> StoreIDCheckedCommand { get; private set; }
         public DelegateCommand<StoreUserEntity> ArchiveIDCheckedCommand { get; private set; }
         public DelegateCommand<StoreUserEntity> UserDetailWindowCommand { get; private set; }
+        public DelegateCommand<StoreUserEntity> SetRoomNumberCommand { get; private set; }
 
         private void ExecuteNonMobileUserCommand()
         {
@@ -972,6 +979,14 @@ namespace UserManagement.UI.ViewModels
 
                 SetLoaderVisibility();
             }
+        }
+
+        private void ExecuteSetRoomNumberCommand(StoreUserEntity user)
+        {
+            _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
+            var parameters = new NavigationParameters { { NavigationConstants.SelectedStoreUser, user } };
+
+            RegionManager.RequestNavigate("PopupRegion", ViewNames.SetRoomNumberPopUpPage, parameters);
         }
 
         private void SetLoaderVisibility(string message = "")

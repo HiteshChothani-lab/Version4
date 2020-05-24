@@ -610,6 +610,15 @@
                                             Background="{Binding Column2RowColor}">
                                         <Grid Margin="5" >
                                             <Grid>
+                                                <Image Width="25"
+                                                       Height="25"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Top"
+                                                       Visibility="{Binding IsCovid19Visible, Converter={StaticResource VisibilityConverter}}"
+                                                       Source="/UserManagement.UI;component/Assets/cough.png"
+                                                       Stretch="Uniform" />
+                                            </Grid>
+                                            <Grid>
                                                 <TextBlock HorizontalAlignment="Right"
                                                            VerticalAlignment="Top"
                                                            FontSize="16"
@@ -823,7 +832,6 @@
                            Foreground="#00167E"
                            Style="{StaticResource TableHeaderTextBlockStyle}"
                            Text="Footnote" />
-
                 <Grid Grid.Row="1"
                       Margin="5,0">
                     <ListView VerticalAlignment="Stretch"
@@ -893,6 +901,28 @@
                                             Background="{Binding TimeDifferenceColor}"
                                             BorderThickness="1">
                                         <Grid Margin="1">
+                                            <Grid>
+                                                <Image Width="30"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Top"
+                                                       Source="/UserManagement.UI;component/Assets/doorway.png"
+                                                       Stretch="Fill" />
+                                                <TextBlock HorizontalAlignment="Left"
+                                                           VerticalAlignment="Top"
+                                                           FontSize="14"
+                                                           Margin="28,5,0,0"
+                                                           FontWeight="Bold"
+                                                           Foreground="#ff0000"
+                                                           Text="{Binding Column2DisplayRoomNumebr}">
+                                                </TextBlock>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                        <i:InvokeCommandAction Command="{Binding ElementName=MainPage1, 
+                                                            Path=DataContext.SetRoomNumberCommand, Mode=OneWay}"
+                                                            CommandParameter="{Binding .}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Grid>
                                             <Grid>
                                                 <TextBlock HorizontalAlignment="Right"
                                                            VerticalAlignment="Top"

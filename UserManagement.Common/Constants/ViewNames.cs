@@ -18,6 +18,7 @@ namespace UserManagement.Common.Constants
         public const string UpdateNonMobileUserPopupPage = "UpdateNonMobileUserPopupPage";
         public const string EditUserAgeOrNeedlePopupPage = "EditUserAgeOrNeedlePopupPage";
         public const string MoveUserPopupPage = "MoveUserPopupPage";
+        public const string SetRoomNumberPopUpPage = "SetRoomNumberPopUpPage";
         public const string ExpressTimePickerPopupPage = "ExpressTimePickerPopupPage";
     }
 }

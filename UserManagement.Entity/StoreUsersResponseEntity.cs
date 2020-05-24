@@ -60,6 +60,8 @@ namespace UserManagement.Entity
         public string TimeDifference { get; set; }
         public string ExpressTime { get; set; }
         public string RegType { get; set; }
+        public int Covid19 { get; set; }
+        public string RoomNumber { get; set; }
 
         public bool IsFlagSet
         {
@@ -115,6 +117,8 @@ namespace UserManagement.Entity
         {
             get => string.IsNullOrEmpty(this.HomePhone) && string.IsNullOrEmpty(this.Mobile) ? "Incomplete" : string.Empty;
         }
+
+        public string Column2DisplayRoomNumebr { get => string.IsNullOrWhiteSpace(RoomNumber) ? "(NONE)" : $"({RoomNumber})"; }
 
         public string Column2IDRDisplayImage
         {
@@ -215,6 +219,8 @@ namespace UserManagement.Entity
         {
             get => this.Btn3.Contains("Flu Shot ") || this.Btn3.Contains("Flu Shot") || this.Btn3.Contains("Vaccination");
         }
+
+        public bool IsCovid19Visible { get => Covid19 >= 7; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

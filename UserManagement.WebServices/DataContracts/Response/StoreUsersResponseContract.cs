@@ -145,5 +145,11 @@ namespace UserManagement.WebServices.DataContracts.Response
 
         [JsonProperty("reg_type")]
         public string RegType { get; set; }
+
+        [JsonProperty("symptom_status_19")]
+        public int Covid19 { get; set; }
+
+        [JsonProperty("room_num")]
+        public string RoomNumber { get; set; }
     }
 }
