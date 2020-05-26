@@ -965,6 +965,13 @@
                                                            TextWrapping="Wrap" />
 
                                             </Grid>
+                                            <Grid>
+                                                <Image Width="25" Height="25"
+                                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                       Visibility="{Binding IsCovid19Visible, Converter={StaticResource VisibilityConverter}}"
+                                                       Source="/UserManagement.UI;component/Assets/cough.png"
+                                                       Stretch="Uniform" />
+                                            </Grid>
                                         </Grid>
                                     </Border>
 

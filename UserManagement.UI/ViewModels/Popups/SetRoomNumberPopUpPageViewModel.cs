@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Prism.Commands;
@@ -39,8 +41,11 @@ namespace UserManagement.UI.ViewModels
 
             if (navigationContext.Parameters[NavigationConstants.SelectedStoreUser] is StoreUserEntity selectedStoreUser)
                 SelectedStoreUser = selectedStoreUser;
-            Populatefields();
 
+            if (navigationContext.Parameters[NavigationConstants.ArchieveStoreUsersRoomNumber] is List<string> archieveStoreUsersRoomNumber)
+                ArchieveStoreUsersRoomNumber = archieveStoreUsersRoomNumber;
+
+            Populatefields();
         }
 
         private void Populatefields()
@@ -79,6 +84,8 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _roomNumber, value);
         }
 
+        public List<string> ArchieveStoreUsersRoomNumber { get; private set; }
+
         private void ExecuteClearCommand()
         {
             RoomNumber = "";
@@ -91,29 +98,33 @@ namespace UserManagement.UI.ViewModels
 
         private async Task ExecuteSubmitCommand()
         {
-
             if (string.IsNullOrEmpty(RoomNumber))
                 MessageBox.Show("Room number is required.", "Required");
+
+            else if(SelectedStoreUser.RoomNumber == RoomNumber)
+                MessageBox.Show($"Room Number [{RoomNumber}] is already associated with current patient.", "ALERT");
+
+            else if (ArchieveStoreUsersRoomNumber != null && ArchieveStoreUsersRoomNumber.Any(a => a == RoomNumber))
+                MessageBox.Show($"Room Number [{RoomNumber}] is already associated with another patient." +
+                    $"{Environment.NewLine}{Environment.NewLine}Please select the other room number.", "NOT AVAILABLE", 
+                    MessageBoxButton.OK);
+
             else
             {
-
                 var reqEntity = new ManageUserRequestEntity()
                 {
-
                     RoomNumber = this.RoomNumber,
                     Id = SelectedStoreUser.Id,
                     MasterStoreId = SelectedStoreUser.MasterStoreId,
-
                 };
 
                 var result = await _windowsManager.SetRoomNumber(reqEntity);
                 switch (result.StatusCode)
                 {
                     case (int)GenericStatusValue.Success when Convert.ToBoolean(result.Status):
+                        
                         RegionNavigationService.Journal.Clear();
-
                         _eventAggregator.GetEvent<EditStoreUserSubmitEvent>().Publish(new EditStoreUserItemModel());
-
                         break;
 
                     case (int)GenericStatusValue.Success:

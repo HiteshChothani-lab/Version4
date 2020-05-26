@@ -6,10 +6,9 @@
         public const string RegisteredMasterStore = "RegisteredMasterStore";
         public const string SelectedStoreUser = "SelectedStoreUser";
         public const string Action = "SelectedUserType";
-
         public const string SelectedIndex = "SelectedIndex";
         public const string StoreUsers = "StoreUsers";
-
         public const string IsSelectedStoreUser = "False";
+        public const string ArchieveStoreUsersRoomNumber = "ArchieveStoreUsersRoomNumber";
     }
 }

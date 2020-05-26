@@ -886,9 +886,11 @@ namespace UserManagement.UI.ViewModels
                     if (dialogResult == MessageBoxResult.Yes)
                     {
                         _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
-                        var parameters = new NavigationParameters();
-                        parameters.Add(NavigationConstants.StoreUsers, reverseStoreUsers.ToList());
-                        parameters.Add(NavigationConstants.SelectedIndex, selectedIndex);
+                        var parameters = new NavigationParameters
+                        {
+                            { NavigationConstants.StoreUsers, reverseStoreUsers.ToList() },
+                            { NavigationConstants.SelectedIndex, selectedIndex }
+                        };
                         this.RegionManager.RequestNavigate("PopupRegion", ViewNames.MoveUserPopupPage, parameters);
                     }
                 }
@@ -984,7 +986,11 @@ namespace UserManagement.UI.ViewModels
         private void ExecuteSetRoomNumberCommand(StoreUserEntity user)
         {
             _eventAggregator.GetEvent<PopupVisibilityEvent>().Publish(true);
-            var parameters = new NavigationParameters { { NavigationConstants.SelectedStoreUser, user } };
+            var parameters = new NavigationParameters 
+            { 
+                { NavigationConstants.SelectedStoreUser, user },
+                { NavigationConstants.ArchieveStoreUsersRoomNumber, ArchieveStoreUsers?.Select(s => s.RoomNumber).ToList() }
+            };
 
             RegionManager.RequestNavigate("PopupRegion", ViewNames.SetRoomNumberPopUpPage, parameters);
         }
