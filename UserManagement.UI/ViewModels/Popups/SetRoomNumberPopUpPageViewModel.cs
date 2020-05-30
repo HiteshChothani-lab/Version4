@@ -50,9 +50,10 @@ namespace UserManagement.UI.ViewModels
 
         private void Populatefields()
         {
+            var room = SelectedStoreUser.RoomNumber;
             FirstName = SelectedStoreUser.Firstname;
             LastName = SelectedStoreUser.Lastname;
-            RoomNumber = SelectedStoreUser.RoomNumber;
+            RoomNumber = string.IsNullOrWhiteSpace(room) || "0".Equals(room) ? string.Empty : room;
             UserFullName = FirstName + " " + LastName;
         }
 
@@ -101,12 +102,12 @@ namespace UserManagement.UI.ViewModels
             if (string.IsNullOrEmpty(RoomNumber))
                 MessageBox.Show("Room number is required.", "Required");
 
-            else if(SelectedStoreUser.RoomNumber == RoomNumber)
+            else if (SelectedStoreUser.RoomNumber == RoomNumber)
                 MessageBox.Show($"Room Number [{RoomNumber}] is already associated with current patient.", "ALERT");
 
             else if (ArchieveStoreUsersRoomNumber != null && ArchieveStoreUsersRoomNumber.Any(a => a == RoomNumber))
                 MessageBox.Show($"Room Number [{RoomNumber}] is already associated with another patient." +
-                    $"{Environment.NewLine}{Environment.NewLine}Please select the other room number.", "NOT AVAILABLE", 
+                    $"{Environment.NewLine}{Environment.NewLine}Please select the other room number.", "NOT AVAILABLE",
                     MessageBoxButton.OK);
 
             else
@@ -122,7 +123,7 @@ namespace UserManagement.UI.ViewModels
                 switch (result.StatusCode)
                 {
                     case (int)GenericStatusValue.Success when Convert.ToBoolean(result.Status):
-                        
+
                         RegionNavigationService.Journal.Clear();
                         _eventAggregator.GetEvent<EditStoreUserSubmitEvent>().Publish(new EditStoreUserItemModel());
                         break;

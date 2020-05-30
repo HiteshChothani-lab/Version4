@@ -118,7 +118,7 @@ namespace UserManagement.Entity
             get => string.IsNullOrEmpty(this.HomePhone) && string.IsNullOrEmpty(this.Mobile) ? "Incomplete" : string.Empty;
         }
 
-        public string Column2DisplayRoomNumebr { get => string.IsNullOrWhiteSpace(RoomNumber) ? "(NONE)" : $"({RoomNumber})"; }
+        public string Column2DisplayRoomNumebr { get => string.IsNullOrWhiteSpace(RoomNumber)  || "0".Equals(RoomNumber) ? "(NONE)" : $"({RoomNumber})"; }
 
         public string Column2IDRDisplayImage
         {

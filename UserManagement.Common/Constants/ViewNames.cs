@@ -20,5 +20,6 @@ namespace UserManagement.Common.Constants
         public const string MoveUserPopupPage = "MoveUserPopupPage";
         public const string SetRoomNumberPopUpPage = "SetRoomNumberPopUpPage";
         public const string ExpressTimePickerPopupPage = "ExpressTimePickerPopupPage";
+        public const string RegisterUserPopupPage = "RegisterUserPopupPage";
     }
 }

@@ -11,5 +11,6 @@ namespace UserManagement.Entity
         public bool IsSuccess { get; set; } = false;
         public int StatusCode { get; set; }
         public string Message { get; set; } = "";
+        public string Messagee { get; set; } = "";
     }
 }
