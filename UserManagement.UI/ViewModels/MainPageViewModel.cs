@@ -1193,8 +1193,8 @@ namespace UserManagement.UI.ViewModels
                 if (this.ArchieveStoreUsers != null && this.ArchieveStoreUsers.Count > 0 &&
                         this.ArchieveStoreUsers.Any(a => a.RegType.Equals("Express")))
                 {
-                    if (this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("early")) ||
-                        this.ArchieveStoreUsers.Any(a => a.TimeDifference.Equals("ready")))
+                    if (this.ArchieveStoreUsers.Any(a => a.TimeDifference != null && a.TimeDifference.Equals("early")) ||
+                        this.ArchieveStoreUsers.Any(a => a.TimeDifference != null && a.TimeDifference.Equals("ready")))
                     {
                         await Task.WhenAll(GetArchieveStoreUsers());
                     }
