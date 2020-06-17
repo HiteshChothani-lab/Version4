@@ -10,14 +10,15 @@ namespace UserManagement.Entity
     {
         public List<StoreUserEntity> Data { get; set; }
         public string Status { get; set; }
-        public string Messagee { get; set; }
+        public new string Messagee { get; set; }
     }
+
     public class ArchieveStoreUsersResponseEntity : EntityBase
     {
         public long ArchieveSize { get; set; }
         public List<StoreUserEntity> Data { get; set; }
         public string Status { get; set; }
-        public string Messagee { get; set; }
+        public new string Messagee { get; set; }
     }
 
     public class StoreUserEntity : INotifyPropertyChanged
@@ -65,12 +66,12 @@ namespace UserManagement.Entity
 
         public bool IsFlagSet
         {
-            get { return this.RecentStatus == "1" ? true : false; }
+            get { return RecentStatus == "1"; }
         }
 
         public bool IsZipCode
         {
-            get { return string.IsNullOrWhiteSpace(this.PostalCode) ? false : Regex.IsMatch(this.PostalCode, "^[0-9]{5}$"); }
+            get { return !string.IsNullOrWhiteSpace(this.PostalCode) && Regex.IsMatch(this.PostalCode, "^[0-9]{5}$"); }
         }
 
         public string Column1TextDisplay
@@ -221,6 +222,11 @@ namespace UserManagement.Entity
         }
 
         public bool IsCovid19Visible { get => Covid19 >= 7; }
+
+        public string RoomNumberColor
+        {
+            get { return string.IsNullOrWhiteSpace(RoomNumber) || "0".Equals(RoomNumber) ? ColorNames.Red : ColorNames.Purple; }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

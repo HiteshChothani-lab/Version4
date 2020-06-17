@@ -902,17 +902,17 @@
                                             BorderThickness="1">
                                         <Grid Margin="1">
                                             <Grid>
-                                                <Image Width="30"
+                                                <Image Width="20" Margin="5,0,0,0"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Top"
-                                                       Source="/UserManagement.UI;component/Assets/doorway.png"
-                                                       Stretch="Fill" />
+                                                       Source="/UserManagement.UI;component/Assets/door_darkerblue_1.png"
+                                                       Stretch="UniformToFill" />
                                                 <TextBlock HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
                                                            FontSize="14"
                                                            Margin="28,5,0,0"
                                                            FontWeight="Bold"
-                                                           Foreground="#ff0000"
+                                                           Foreground="{Binding RoomNumberColor}"
                                                            Text="{Binding Column2DisplayRoomNumebr}">
                                                 </TextBlock>
                                                 <i:Interaction.Triggers>
