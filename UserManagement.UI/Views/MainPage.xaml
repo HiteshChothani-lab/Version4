@@ -541,7 +541,8 @@
 
                 <Grid Grid.Row="1"
                       Margin="5,0">
-                    <ListView VerticalAlignment="Bottom"
+                    <ListView x:Name="MainTableListView" 
+                        VerticalAlignment="Bottom"
                               HorizontalContentAlignment="Stretch"
                               VerticalContentAlignment="Bottom"
                               Background="Transparent"
