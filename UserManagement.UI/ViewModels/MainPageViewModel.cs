@@ -263,32 +263,39 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _isCheckedVeryTerrible, value);
         }
 
-        private bool _isCheckedVeryTerribleNoneDeal;
-        public bool IsCheckedVeryTerribleNoneDeal
+        private bool _isCheckedFluShot;
+        public bool IsCheckedFluShot
         {
-            get => _isCheckedVeryTerribleNoneDeal;
-            set => SetProperty(ref _isCheckedVeryTerribleNoneDeal, value);
+            get => _isCheckedFluShot;
+            set => SetProperty(ref _isCheckedFluShot, value);
         }
 
-        private bool _isCheckedVeryTerribleTerribleService;
-        public bool IsCheckedVeryTerribleTerribleService
+        private bool _isCheckedShingles;
+        public bool IsCheckedShingles
         {
-            get => _isCheckedVeryTerribleTerribleService;
-            set => SetProperty(ref _isCheckedVeryTerribleTerribleService, value);
+            get => _isCheckedShingles;
+            set => SetProperty(ref _isCheckedShingles, value);
         }
 
-        private bool _isCheckedVeryTerribleNoneDealTerribleService;
-        public bool IsCheckedVeryTerribleNoneDealTerribleService
+        private bool _isCheckedPneumococcus;
+        public bool IsCheckedPneumococcus
         {
-            get => _isCheckedVeryTerribleNoneDealTerribleService;
-            set => SetProperty(ref _isCheckedVeryTerribleNoneDealTerribleService, value);
+            get => _isCheckedPneumococcus;
+            set => SetProperty(ref _isCheckedPneumococcus, value);
         }
 
-        private bool _isCheckedVeryTerribleNone;
-        public bool IsCheckedVeryTerribleNone
+        private bool _isCheckedOtherVaccination;
+        public bool IsCheckedOtherVaccination
         {
-            get => _isCheckedVeryTerribleNone;
-            set => SetProperty(ref _isCheckedVeryTerribleNone, value);
+            get => _isCheckedOtherVaccination;
+            set => SetProperty(ref _isCheckedOtherVaccination, value);
+        }
+
+        private bool _isCheckedCovid19;
+        public bool IsCheckedCovid19
+        {
+            get => _isCheckedCovid19;
+            set => SetProperty(ref _isCheckedCovid19, value);
         }
 
         private bool _canTapAddCommand = true;
@@ -376,28 +383,51 @@ namespace UserManagement.UI.ViewModels
         {
             if (string.IsNullOrEmpty(parameter))
             {
-                this.IsCheckedVeryTerribleNone = false;
-                this.IsCheckedVeryTerribleNoneDeal = false;
-                this.IsCheckedVeryTerribleTerribleService = false;
-                this.IsCheckedVeryTerribleNoneDealTerribleService = false;
+                IsCheckedFluShot = false;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = false;
+                IsCheckedOtherVaccination = false;
             }
             else if (parameter == "1")
             {
-                if (this.IsCheckedVeryTerribleNone)
-                    this.IsCheckedVeryTerribleNone = this.IsCheckedVeryTerribleTerribleService == false &&
-                    this.IsCheckedVeryTerribleNoneDealTerribleService == false;
+                if (IsCheckedFluShot)
+                    IsCheckedFluShot = IsCheckedShingles == false &&
+                    IsCheckedPneumococcus == false &&
+                    IsCheckedCovid19 == false &&
+                    IsCheckedOtherVaccination == false;
             }
             else if (parameter == "2")
             {
-                if (this.IsCheckedVeryTerribleNone)
-                    this.IsCheckedVeryTerribleNone = this.IsCheckedVeryTerribleNoneDeal == false &&
-                    this.IsCheckedVeryTerribleNoneDealTerribleService == false;
+                if (IsCheckedShingles)
+                    IsCheckedShingles = IsCheckedFluShot == false &&
+                    IsCheckedPneumococcus == false &&
+                    IsCheckedCovid19 == false &&
+                    IsCheckedOtherVaccination == false;
             }
             else if (parameter == "3")
             {
-                if (this.IsCheckedVeryTerribleNone)
-                    this.IsCheckedVeryTerribleNone = this.IsCheckedVeryTerribleNoneDeal == false &&
-                    this.IsCheckedVeryTerribleTerribleService == false;
+                if (IsCheckedPneumococcus)
+                    IsCheckedPneumococcus = IsCheckedFluShot == false &&
+                    IsCheckedShingles == false &&
+                    IsCheckedCovid19 == false &&
+                    IsCheckedOtherVaccination == false;
+            }
+            else if (parameter == "4")
+            {
+                if (IsCheckedCovid19)
+                    IsCheckedCovid19 = IsCheckedFluShot == false &&
+                    IsCheckedShingles == false &&
+                    IsCheckedPneumococcus == false &&
+                    IsCheckedOtherVaccination == false;
+            }
+            else if (parameter == "5")
+            {
+                if (IsCheckedOtherVaccination)
+                    IsCheckedOtherVaccination = IsCheckedFluShot == false &&
+                    IsCheckedShingles == false &&
+                    IsCheckedCovid19 == false &&
+                    IsCheckedPneumococcus == false;
             }
         }
 
@@ -405,31 +435,51 @@ namespace UserManagement.UI.ViewModels
         {
             if (string.IsNullOrEmpty(parameter))
             {
-                this.IsCheckedVeryTerribleNone = true;
-                this.IsCheckedVeryTerribleNoneDeal = false;
-                this.IsCheckedVeryTerribleTerribleService = false;
-                this.IsCheckedVeryTerribleNoneDealTerribleService = false;
+                IsCheckedOtherVaccination = true;
+                IsCheckedFluShot = false;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = false;
             }
             else if (parameter == "1")
             {
-                this.IsCheckedVeryTerribleNone = false;
-                this.IsCheckedVeryTerribleNoneDeal = true;
-                this.IsCheckedVeryTerribleTerribleService = false;
-                this.IsCheckedVeryTerribleNoneDealTerribleService = false;
+                IsCheckedFluShot = true;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = false;
+                IsCheckedOtherVaccination = false;
             }
             else if (parameter == "2")
             {
-                this.IsCheckedVeryTerribleNone = false;
-                this.IsCheckedVeryTerribleNoneDeal = false;
-                this.IsCheckedVeryTerribleTerribleService = true;
-                this.IsCheckedVeryTerribleNoneDealTerribleService = false;
+                IsCheckedFluShot = false;
+                IsCheckedShingles = true;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = false;
+                IsCheckedOtherVaccination = false;
             }
             else if (parameter == "3")
             {
-                this.IsCheckedVeryTerribleNone = false;
-                this.IsCheckedVeryTerribleNoneDeal = false;
-                this.IsCheckedVeryTerribleTerribleService = false;
-                this.IsCheckedVeryTerribleNoneDealTerribleService = true;
+                IsCheckedFluShot = false;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = true;
+                IsCheckedCovid19 = false;
+                IsCheckedOtherVaccination = false;
+            }
+            else if (parameter == "4")
+            {
+                IsCheckedFluShot = false;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = true;
+                IsCheckedOtherVaccination = false;
+            }
+            else if (parameter == "5")
+            {
+                IsCheckedFluShot = false;
+                IsCheckedShingles = false;
+                IsCheckedPneumococcus = false;
+                IsCheckedCovid19 = false;
+                IsCheckedOtherVaccination = true;
             }
         }
 
@@ -461,6 +511,12 @@ namespace UserManagement.UI.ViewModels
             if (IsAppointmentEnable && !this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
             {
                 MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
+                return;
+            }
+
+            if (IsCheckedCovid19)
+            {
+                MessageBox.Show("Sorry, COVID-19 is not available at moment.", "Warning", MessageBoxButton.OK);
                 return;
             }
 
@@ -512,21 +568,21 @@ namespace UserManagement.UI.ViewModels
                 reqEntity.Button2 = "Follow Up";
             }
 
-            if (this.IsCheckedVeryTerribleNone)
-            {
-                reqEntity.Button3 = "Vaccination";
-            }
-            else if (this.IsCheckedVeryTerribleNoneDeal)
+            if (this.IsCheckedFluShot)
             {
                 reqEntity.Button3 = "Flu Shot";
             }
-            else if (this.IsCheckedVeryTerribleTerribleService)
+            else if (this.IsCheckedShingles)
+            {
+                reqEntity.Button3 = "Shingles";
+            }
+            else if (this.IsCheckedPneumococcus)
+            {
+                reqEntity.Button3 = "Pneumococcus";
+            }
+            else if (this.IsCheckedOtherVaccination)
             {
                 reqEntity.Button3 = "Other Vaccines";
-            }
-            else if (this.IsCheckedVeryTerribleNoneDealTerribleService)
-            {
-                reqEntity.Button3 = "Flu Shot & Other Vaccines";
             }
 
             reqEntity.Button4 = string.Empty;
@@ -1055,19 +1111,18 @@ namespace UserManagement.UI.ViewModels
 
         private void ResetFields()
         {
-            this.NonMobileUser = null;
-            this.FirstName = string.Empty;
-            this.LastName = string.Empty;
-            this.MobileNumber = string.Empty;
-
-            this.IsCheckedIndifferent = false;
-            this.IsCheckedVeryGood = false;
-
-            this.IsCheckedVeryTerribleNone = false;
-            this.IsCheckedVeryTerrible = false;
-            this.IsCheckedVeryTerribleNoneDeal = false;
-            this.IsCheckedVeryTerribleTerribleService = false;
-            this.IsCheckedVeryTerribleNoneDealTerribleService = false;
+            NonMobileUser = null;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            MobileNumber = string.Empty;
+            IsCheckedIndifferent = false;
+            IsCheckedVeryGood = false;
+            IsCheckedVeryTerrible = false;
+            IsCheckedFluShot = false;
+            IsCheckedShingles = false;
+            IsCheckedPneumococcus = false;
+            IsCheckedCovid19 = false;
+            IsCheckedOtherVaccination = false;
         }
 
         private async Task GetData()

@@ -35,7 +35,6 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <!--<ColumnDefinition Width="*" />-->
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -45,14 +44,11 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <Grid Grid.RowSpan="2"
-                          Grid.ColumnSpan="3"
-                          HorizontalAlignment="Stretch"
-                          Margin="115,0,145,0">
+            <Grid Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="5,0,5,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
@@ -60,9 +56,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0"
-                          Grid.Column="0">
-                    <ToggleButton Margin="2,5"
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <ToggleButton Margin="2,5" Padding="55,0"
                                       IsChecked="{Binding IsCheckedVeryGood}"
                                       Style="{StaticResource RoundToggleButtonStyle}">
                         <ToggleButton.Content>
@@ -76,9 +71,8 @@
                     </ToggleButton>
                 </Grid>
 
-                <Grid Grid.Row="0"
-                          Grid.Column="1">
-                    <ToggleButton Margin="2,5"
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <ToggleButton Margin="2,5"  Padding="55,0"
                                       HorizontalContentAlignment="Stretch"
                                       IsChecked="{Binding IsCheckedIndifferent}"
                                       Style="{StaticResource RoundToggleButtonStyle}">
@@ -92,198 +86,252 @@
                         </ToggleButton.Content>
                     </ToggleButton>
                 </Grid>
-                <Grid Grid.Row="1"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="90" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="110" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" 
-                          Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
-                        <ToggleButton Margin="5,5"
+
+                <Grid Grid.Row="0" Grid.Column="2" Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                    <ToggleButton Margin="2,5"
                                           HorizontalContentAlignment="Stretch"
                                           IsChecked="{Binding IsCheckedVeryTerrible}"
                                           Style="{StaticResource RoundToggleButtonStyle}">
 
-                            <ToggleButton.Content>
-                                <Grid Margin="2,5"
-                                          HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                        <ToggleButton.Content>
+                            <Grid Margin="2,5" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                                    <TextBlock VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center"
                                                    FontSize="14"
-                                                   Text="Vaccination"
-                                                   TextWrapping="Wrap" />
+                                                   Text="Vaccination" />
+                                <TextBlock
+                                               VerticalAlignment="Center"
+                                               FontSize="10" Opacity="0"
+                                               Text="Flu Shot &amp; Other Vaccines hhjsd"
+                                               TextWrapping="Wrap" />
 
-                                    <Image Grid.Column="1"
+                                <Image Grid.Column="1"
                                                MaxHeight="25"
                                                Margin="2,0"
                                                VerticalAlignment="Center"
                                                RenderOptions.BitmapScalingMode="HighQuality"
                                                Source="/UserManagement.UI;component/Assets/icon_syringe_green.png" />
-                                </Grid>
-                            </ToggleButton.Content>
+                            </Grid>
+                        </ToggleButton.Content>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Checked">
-                                    <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
                                                                CommandParameter="" />
-                                </i:EventTrigger>
+                            </i:EventTrigger>
 
-                                <i:EventTrigger EventName="Unchecked">
-                                    <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
                                                                CommandParameter="" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ToggleButton>
-                    </Grid>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
                 </Grid>
-            </Grid>
 
-            <Grid Grid.Row="2"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="3"
-                          Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="4*"/>
-                    <ColumnDefinition Width="4*"/>
-                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1" Grid.ColumnSpan="3"  
+                              Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <ToggleButton Margin="5,5"
-                                      HorizontalContentAlignment="Stretch"
-                                      IsChecked="{Binding IsCheckedVeryTerribleNoneDeal}"
-                                      Style="{StaticResource RoundToggleButtonStyle}">
-                    <ToggleButton.Content>
-                        <Grid Margin="2,5"
-                                      HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                    <ToggleButton Margin="2,5" HorizontalContentAlignment="Stretch"
+                                          IsChecked="{Binding IsCheckedFluShot}" Style="{StaticResource RoundToggleButtonStyle}"
+                                          Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <ToggleButton.Content>
+                            <Grid Margin="2,5" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
                                                Text="Flu Shot"
                                                TextWrapping="Wrap" />
 
-                            <Image Grid.Column="1"
+                                <Image Grid.Column="1"
                                            MaxHeight="25"
                                            Margin="2,0"
                                            VerticalAlignment="Center"
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            Source="/UserManagement.UI;component/Assets/icon_syringe_green.png" />
-                        </Grid>
-                    </ToggleButton.Content>
+                            </Grid>
+                        </ToggleButton.Content>
 
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
                                                            CommandParameter="1" />
-                        </i:EventTrigger>
+                            </i:EventTrigger>
 
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
                                                                CommandParameter="1" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
 
-                <ToggleButton Grid.Column="1"
-                                      Margin="5,5"
-                                      HorizontalContentAlignment="Stretch"
-                                      IsChecked="{Binding IsCheckedVeryTerribleTerribleService}"
-                                      Style="{StaticResource RoundToggleButtonStyle}">
-                    <ToggleButton.Content>
-                        <Grid Margin="2,5"
+                    <ToggleButton  Grid.Column="1" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                           IsChecked="{Binding IsCheckedShingles}" Style="{StaticResource RoundToggleButtonStyle}"
+                                           Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <ToggleButton.Content>
+                            <Grid Margin="2,5"
                                       HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center"
                                                FontSize="14"
-                                               Text="Other Vaccines"
+                                               Text="Shingles"
                                                TextWrapping="Wrap" />
 
-                            <Image Grid.Column="1"
+                                <Image Grid.Column="1"
                                            MaxHeight="25"
                                            Margin="2,0"
                                            VerticalAlignment="Center"
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            Source="/UserManagement.UI;component/Assets/icon_syringe_yellow.png" />
-                        </Grid>
-                    </ToggleButton.Content>
+                            </Grid>
+                        </ToggleButton.Content>
 
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
                                                            CommandParameter="2" />
-                        </i:EventTrigger>
+                            </i:EventTrigger>
 
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
                                                                CommandParameter="2" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
 
-                <ToggleButton Grid.Column="2"
-                                      Margin="5,5"
-                                      HorizontalContentAlignment="Stretch"
-                                      IsChecked="{Binding IsCheckedVeryTerribleNoneDealTerribleService}"
-                                      Style="{StaticResource RoundToggleButtonStyle}">
-                    <ToggleButton.Content>
-                        <Grid Margin="2,5"
+                    <ToggleButton  Grid.Column="2" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                           IsChecked="{Binding IsCheckedPneumococcus}" Style="{StaticResource RoundToggleButtonStyle}"
+                                           Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <ToggleButton.Content>
+                            <Grid Margin="5,5"
                                       HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Image Grid.Column="0"
-                                           MaxHeight="25"
-                                           Margin="2,0"
-                                           VerticalAlignment="Center"
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           Source="/UserManagement.UI;component/Assets/icon_syringe_green.png" />
-
-                            <TextBlock Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               FontSize="10"
-                                               Text="Flu Shot &amp; Other Vaccines"
+                                <TextBlock VerticalAlignment="Center"
+                                               FontSize="14"
+                                               Text="Pneumococcus"
                                                TextWrapping="Wrap" />
 
-                            <Image Grid.Column="2"
+                                <Image Grid.Column="1"
                                            MaxHeight="25"
                                            Margin="2,0"
                                            VerticalAlignment="Center"
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            Source="/UserManagement.UI;component/Assets/icon_syringe_yellow.png" />
-                        </Grid>
-                    </ToggleButton.Content>
+                            </Grid>
+                        </ToggleButton.Content>
 
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
                                                            CommandParameter="3" />
-                        </i:EventTrigger>
+                            </i:EventTrigger>
 
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
                                                                CommandParameter="3" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
-            </Grid>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
 
+                    <ToggleButton  Grid.Column="3" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                           IsChecked="{Binding IsCheckedCovid19}" Style="{StaticResource RoundToggleButtonStyle}"
+                                           Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <ToggleButton.Content>
+                            <Grid Margin="2,5"
+                                      HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Center"
+                                               FontSize="14"
+                                               Text="COVID-19"
+                                               TextWrapping="Wrap" />
+
+                                <Image Grid.Column="1"
+                                           MaxHeight="25"
+                                           Margin="2,0"
+                                           VerticalAlignment="Center"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           Source="/UserManagement.UI;component/Assets/icon_syringe_yellow.png" />
+                            </Grid>
+                        </ToggleButton.Content>
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                                                           CommandParameter="4" />
+                            </i:EventTrigger>
+
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                                                               CommandParameter="4" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
+
+                    <ToggleButton  Grid.Column="4" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                           IsChecked="{Binding IsCheckedOtherVaccination}" Style="{StaticResource RoundToggleButtonStyle}"
+                                           Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <ToggleButton.Content>
+                            <Grid Margin="2,5"
+                                      HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Center"
+                                               FontSize="14"
+                                               Text="Other"
+                                               TextWrapping="Wrap" />
+
+                                <Image Grid.Column="1"
+                                           MaxHeight="25"
+                                           Margin="2,0"
+                                           VerticalAlignment="Center"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           Source="/UserManagement.UI;component/Assets/icon_syringe_yellow.png" />
+                            </Grid>
+                        </ToggleButton.Content>
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleCheckedCommand, Mode=OneWay}"
+                                                           CommandParameter="5" />
+                            </i:EventTrigger>
+
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Path=VeryTerribleUncheckedCommand, Mode=OneWay}"
+                                                               CommandParameter="5" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToggleButton>
+                </Grid>
+            </Grid>
             <Grid Grid.Row="3"
                           Grid.Column="0"
                           Grid.ColumnSpan="3"

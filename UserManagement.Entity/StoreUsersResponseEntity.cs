@@ -119,7 +119,7 @@ namespace UserManagement.Entity
             get => string.IsNullOrEmpty(this.HomePhone) && string.IsNullOrEmpty(this.Mobile) ? "Incomplete" : string.Empty;
         }
 
-        public string Column2DisplayRoomNumebr { get => string.IsNullOrWhiteSpace(RoomNumber)  || "0".Equals(RoomNumber) ? "(NONE)" : $"({RoomNumber})"; }
+        public string Column2DisplayRoomNumebr { get => string.IsNullOrWhiteSpace(RoomNumber) || "0".Equals(RoomNumber) ? "(NONE)" : $"({RoomNumber})"; }
 
         public string Column2IDRDisplayImage
         {
@@ -213,12 +213,14 @@ namespace UserManagement.Entity
 
         public bool IsYellowNeedleVisible
         {
-            get => this.Btn3.Contains("Flu Shot ") || this.Btn3.Contains("Other Vaccines");
+            get => Btn3.Contains("Shingles")
+                 || Btn3.Contains("Pneumococcus")
+                 || Btn3.Contains("Other Vaccines");
         }
 
         public bool IsGreenNeedleVisible
         {
-            get => this.Btn3.Contains("Flu Shot ") || this.Btn3.Contains("Flu Shot") || this.Btn3.Contains("Vaccination");
+            get => Btn3.Contains("Flu Shot") || Btn3.Contains("Vaccination");
         }
 
         public bool IsCovid19Visible { get => Covid19 >= 7; }
