@@ -75,6 +75,13 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _isCheckedVeryTerrible, value);
         }
 
+        private bool _isCheckedCovid19Test;
+        public bool IsCheckedCovid19Test
+        {
+            get => _isCheckedCovid19Test;
+            set => SetProperty(ref _isCheckedCovid19Test, value);
+        }
+
         private bool _isCheckedFluShot;
         public bool IsCheckedFluShot
         {
@@ -162,23 +169,30 @@ namespace UserManagement.UI.ViewModels
                 reqEntity.Button2 = "Follow Up";
             }
 
-            reqEntity.Button3 = string.Empty; //"Vaccination";
+            reqEntity.Button3 = string.Empty;
+
+            if (IsCheckedCovid19Test)
+            {
+                reqEntity.Button3 = "Covid19 Test";
+            }
+
+            reqEntity.Button4 = string.Empty;
 
             if (this.IsCheckedFluShot)
             {
-                reqEntity.Button3 = "Flu Shot";
+                reqEntity.Button4 = "Flu Shot";
             }
             else if (this.IsCheckedShingles)
             {
-                reqEntity.Button3 = "Shingles";
+                reqEntity.Button4 = "Shingles";
             }
             else if (this.IsCheckedPneumococcus)
             {
-                reqEntity.Button3 = "Pneumococcus";
+                reqEntity.Button4 = "Pneumococcus";
             }
             else if (this.IsCheckedOtherVaccination)
             {
-                reqEntity.Button3 = "Other Vaccines";
+                reqEntity.Button4 = "Other Vaccines";
             }
 
             var result = await _windowsManager.UpdateButtons(reqEntity);
@@ -332,21 +346,22 @@ namespace UserManagement.UI.ViewModels
 
             this.IsCheckedVeryGood = SelectedStoreUser.Btn1.Equals("New Case");
             this.IsCheckedIndifferent = SelectedStoreUser.Btn2.Equals("Follow Up");
-            this.IsCheckedVeryTerrible = !string.IsNullOrWhiteSpace(SelectedStoreUser.Btn3);
+            IsCheckedCovid19Test = !string.IsNullOrWhiteSpace(SelectedStoreUser.Btn3);
+            this.IsCheckedVeryTerrible = !string.IsNullOrWhiteSpace(SelectedStoreUser.Btn4);
 
-            if (SelectedStoreUser.Btn3.Equals("Vaccination") || SelectedStoreUser.Btn3.Equals("Flu Shot"))
+            if (SelectedStoreUser.Btn4.Equals("Vaccination") || SelectedStoreUser.Btn4.Equals("Flu Shot"))
             {
                 this.IsCheckedFluShot = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("Shingles"))
+            else if (SelectedStoreUser.Btn4.Equals("Shingles"))
             {
                 this.IsCheckedShingles = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("Pneumococcus"))
+            else if (SelectedStoreUser.Btn4.Equals("Pneumococcus"))
             {
                 this.IsCheckedPneumococcus = true;
             }
-            else if (SelectedStoreUser.Btn3.Equals("Other Vaccines"))
+            else if (SelectedStoreUser.Btn4.Equals("Other Vaccines"))
             {
                 this.IsCheckedOtherVaccination = true;
             }
@@ -354,18 +369,19 @@ namespace UserManagement.UI.ViewModels
 
         private void SetUnsetProperties()
         {
-            this.IsCheckedIndifferent = false;
-            this.IsCheckedVeryGood = false;
-            this.IsCheckedVeryTerrible = false;
+            IsCheckedIndifferent = false;
+            IsCheckedCovid19Test = false;
+            IsCheckedVeryGood = false;
+            IsCheckedVeryTerrible = false;
             IsCheckedFluShot = false;
             IsCheckedShingles = false;
             IsCheckedPneumococcus = false;
             IsCheckedCovid19 = false;
             IsCheckedOtherVaccination = false;
-            this.IsUserTypeMobile = true;
-            this.IsUserTypeNonMobile = false;
-            this.IsSelectedStoreUser = false;
-            this.SelectedStoreUser = new StoreUserEntity();
+            IsUserTypeMobile = true;
+            IsUserTypeNonMobile = false;
+            IsSelectedStoreUser = false;
+            SelectedStoreUser = new StoreUserEntity();
         }
     }
 }

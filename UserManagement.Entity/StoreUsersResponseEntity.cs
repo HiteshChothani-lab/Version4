@@ -213,14 +213,19 @@ namespace UserManagement.Entity
 
         public bool IsYellowNeedleVisible
         {
-            get => Btn3.Contains("Shingles")
-                 || Btn3.Contains("Pneumococcus")
-                 || Btn3.Contains("Other Vaccines");
+            get => Btn4.Contains("Shingles")
+                 || Btn4.Contains("Pneumococcus")
+                 || Btn4.Contains("Other Vaccines");
         }
 
         public bool IsGreenNeedleVisible
         {
-            get => Btn3.Contains("Flu Shot") || Btn3.Contains("Vaccination");
+            get => Btn4.Contains("Flu Shot") || Btn4.Contains("Vaccination");
+        }
+
+        public bool IsRedNeedleVisible
+        {
+            get => !string.IsNullOrWhiteSpace(Btn3);
         }
 
         public bool IsCovid19Visible { get => Covid19 >= 7; }

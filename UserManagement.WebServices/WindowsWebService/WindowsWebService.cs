@@ -99,8 +99,10 @@ namespace UserManagement.WebServices
                        $"mobile={reqContract.Mobile}&" +
                        $"master_store_id={reqContract.StoreId}&" +
                        $"store_id={reqContract.StoreId}&" +
-                       $"btn1={reqContract.Button1}&btn2={reqContract.Button2}&" +
-                       $"btn3={reqContract.Button3}&btn4={reqContract.Button4}&" +
+                       $"btn1={reqContract.Button1}&" +
+                       $"btn2={reqContract.Button2}&" +
+                       $"btn3={reqContract.Button3}&" +
+                       $"btn4={reqContract.Button4}&" +
                        $"orphan_status={reqContract.OrphanStatus}&" +
                        $"super_master_id={reqContract.SuperMasterId}&" +
                        $"deliver_order_status={reqContract.DeliverOrderStatus}&" +
@@ -286,7 +288,7 @@ namespace UserManagement.WebServices
                               $"btn1={reqContract.Button1}&" +
                               $"btn2={reqContract.Button2}&" +
                               $"btn3={reqContract.Button3}&" +
-                              $"btn4={string.Empty}&" +
+                              $"btn4={reqContract.Button4}&" +
                               $"bad_exp_desc={string.Empty}";
 
             var resultContract = await GetDefaultResponseContract(endpoint);

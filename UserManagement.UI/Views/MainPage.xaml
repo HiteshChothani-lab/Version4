@@ -110,11 +110,12 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="5,0,5,0">
+                    <Grid Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Margin="5,0,5,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="80*" />
+                            <ColumnDefinition Width="80*" />
+                            <ColumnDefinition Width="70*" />
+                            <ColumnDefinition Width="60*" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -123,7 +124,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0" Grid.Column="0">
-                            <ToggleButton Margin="2,5" Padding="55,0"
+                            <ToggleButton Margin="2,5" Padding="0,0"
                                       IsChecked="{Binding IsCheckedVeryGood}"
                                       Style="{StaticResource RoundToggleButtonStyle}">
                                 <ToggleButton.Content>
@@ -138,7 +139,7 @@
                         </Grid>
 
                         <Grid Grid.Row="0" Grid.Column="1">
-                            <ToggleButton Margin="2,5"  Padding="55,0"
+                            <ToggleButton Margin="2,5"  Padding="0,0"
                                       HorizontalContentAlignment="Stretch"
                                       IsChecked="{Binding IsCheckedIndifferent}"
                                       Style="{StaticResource RoundToggleButtonStyle}">
@@ -153,7 +154,33 @@
                             </ToggleButton>
                         </Grid>
 
-                        <Grid Grid.Row="0" Grid.Column="2" Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
+                        <Grid Grid.Row="0" Grid.Column="2">
+                            <ToggleButton Margin="2,5"
+                                      HorizontalContentAlignment="Stretch"
+                                      IsChecked="{Binding IsCheckedCovid19Test}"
+                                      Style="{StaticResource RoundToggleButtonStyle}">
+                                <ToggleButton.Content>
+                                    <Grid Margin="5,5" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock VerticalAlignment="Center"
+                                               FontSize="14"
+                                               Text="COVID-19 Test"/>
+
+                                        <Image Grid.Column="1"
+                                           MaxHeight="25"
+                                           VerticalAlignment="Center"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           Source="/UserManagement.UI;component/Assets/redneedle.png" />
+                                    </Grid>
+                                </ToggleButton.Content>
+                            </ToggleButton>
+                        </Grid>
+
+                        <Grid Grid.Row="0" Grid.Column="3" Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                             <ToggleButton Margin="2,5"
                                           HorizontalContentAlignment="Stretch"
                                           IsChecked="{Binding IsCheckedVeryTerrible}"
@@ -162,22 +189,16 @@
                                 <ToggleButton.Content>
                                     <Grid Margin="2,5" HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock VerticalAlignment="Center"
                                                    FontSize="14"
-                                                   Text="Vaccination" />
-                                        <TextBlock
-                                               VerticalAlignment="Center"
-                                               FontSize="10" Opacity="0"
-                                               Text="Flu Shot &amp; Other Vaccines hhjsd"
-                                               TextWrapping="Wrap" />
+                                                   Text="Vaccines" />
 
                                         <Image Grid.Column="1"
                                                MaxHeight="25"
-                                               Margin="2,0"
                                                VerticalAlignment="Center"
                                                RenderOptions.BitmapScalingMode="HighQuality"
                                                Source="/UserManagement.UI;component/Assets/icon_syringe_green.png" />
@@ -198,7 +219,7 @@
                             </ToggleButton>
                         </Grid>
 
-                        <Grid Grid.Row="1" Grid.ColumnSpan="3"  
+                        <Grid Grid.Row="1" Grid.ColumnSpan="4"
                               Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -219,9 +240,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock VerticalAlignment="Center"
-                                               FontSize="14"
-                                               Text="Flu Shot"
-                                               TextWrapping="Wrap" />
+                                               FontSize="14" Padding="10,0,10,0"
+                                               Text="Flu Shot" />
 
                                         <Image Grid.Column="1"
                                            MaxHeight="25"
@@ -257,7 +277,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock VerticalAlignment="Center"
-                                               FontSize="14"
+                                               FontSize="14" Padding="10,0,10,0"
                                                Text="Shingles"
                                                TextWrapping="Wrap" />
 
@@ -295,7 +315,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock VerticalAlignment="Center"
-                                               FontSize="14"
+                                               FontSize="14" Padding="10,0,10,0"
                                                Text="Pneumococcus"
                                                TextWrapping="Wrap" />
 
@@ -333,9 +353,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock VerticalAlignment="Center"
-                                               FontSize="14"
-                                               Text="COVID-19"
-                                               TextWrapping="Wrap" />
+                                               FontSize="14" Padding="5,0,5,0"
+                                               Text="COVID-19"/>
 
                                         <Image Grid.Column="1"
                                            MaxHeight="25"
@@ -469,9 +488,9 @@
                                                            Text="{Binding Column1TextDisplay}" />
                                             </Grid>
 
-                                            <Grid Margin="0,20,0,5"
+                                            <Grid Margin="0,10,0,0"
                                                   VerticalAlignment="Center">
-                                                <Image Width="35"
+                                                <Image Width="30"
                                                        Margin="0"
                                                        Visibility="{Binding IsYellowNeedleVisible, Converter={StaticResource VisibilityConverter}}"
                                                        HorizontalAlignment="Left"
@@ -485,13 +504,18 @@
                                                        VerticalAlignment="Center"
                                                        Source="{Binding Column1AgeDisplayImage}"
                                                        Stretch="Uniform" />
-                                                <Image Width="35"
+                                                <StackPanel Width="30" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <Image Width="30"
+                                                       Margin="0"
+                                                       Visibility="{Binding IsRedNeedleVisible, Converter={StaticResource VisibilityConverter}}"
+                                                       Source="/UserManagement.UI;component/Assets/redneedle.png"
+                                                       Stretch="Uniform" />
+                                                    <Image Width="30"
                                                        Margin="0"
                                                        Visibility="{Binding IsGreenNeedleVisible, Converter={StaticResource VisibilityConverter}}"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"
                                                        Source="/UserManagement.UI;component/Assets/icon_syringe_green.png"
-                                                       Stretch="Fill" />
+                                                       Stretch="Uniform" />
+                                                </StackPanel>
                                             </Grid>
                                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#02FFFFFF">
                                                 <i:Interaction.Triggers>
@@ -762,9 +786,9 @@
                                                            Text="{Binding Column1TextDisplay}" />
                                             </Grid>
 
-                                            <Grid Margin="0,20,0,0"
+                                            <Grid Margin="0,5,0,0"
                                                   VerticalAlignment="Center">
-                                                <Image Width="35"
+                                                <Image Width="25"
                                                        Margin="0"
                                                        Visibility="{Binding IsYellowNeedleVisible, Converter={StaticResource VisibilityConverter}}"
                                                        HorizontalAlignment="Left"
@@ -772,18 +796,23 @@
                                                        Source="/UserManagement.UI;component/Assets/icon_syringe_yellow.png"
                                                        Stretch="Fill" />
                                                 <Image Width="70"
-                                                       Height="45"
+                                                       Height="45" Margin="0,10,0,0"
                                                        HorizontalAlignment="Center"
                                                        VerticalAlignment="Center"
                                                        Source="{Binding Column1AgeDisplayImage}"
                                                        Stretch="Uniform" />
-                                                <Image Width="35"
+                                                <StackPanel Width="30" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <Image Width="25"
+                                                       Margin="0"
+                                                       Visibility="{Binding IsRedNeedleVisible, Converter={StaticResource VisibilityConverter}}"
+                                                       Source="/UserManagement.UI;component/Assets/redneedle.png"
+                                                       Stretch="Uniform" />
+                                                    <Image Width="25"
                                                        Margin="0"
                                                        Visibility="{Binding IsGreenNeedleVisible, Converter={StaticResource VisibilityConverter}}"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"
                                                        Source="/UserManagement.UI;component/Assets/icon_syringe_green.png"
-                                                       Stretch="Fill" />
+                                                       Stretch="Uniform" />
+                                                </StackPanel>
                                             </Grid>
                                             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#02FFFFFF">
                                                 <i:Interaction.Triggers>

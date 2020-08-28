@@ -263,6 +263,13 @@ namespace UserManagement.UI.ViewModels
             set => SetProperty(ref _isCheckedVeryTerrible, value);
         }
 
+        private bool _isCheckedCovid19Test;
+        public bool IsCheckedCovid19Test
+        {
+            get => _isCheckedCovid19Test;
+            set => SetProperty(ref _isCheckedCovid19Test, value);
+        }
+
         private bool _isCheckedFluShot;
         public bool IsCheckedFluShot
         {
@@ -568,24 +575,31 @@ namespace UserManagement.UI.ViewModels
                 reqEntity.Button2 = "Follow Up";
             }
 
-            if (this.IsCheckedFluShot)
+            reqEntity.Button3 = string.Empty;
+
+            if (IsCheckedCovid19Test)
             {
-                reqEntity.Button3 = "Flu Shot";
-            }
-            else if (this.IsCheckedShingles)
-            {
-                reqEntity.Button3 = "Shingles";
-            }
-            else if (this.IsCheckedPneumococcus)
-            {
-                reqEntity.Button3 = "Pneumococcus";
-            }
-            else if (this.IsCheckedOtherVaccination)
-            {
-                reqEntity.Button3 = "Other Vaccines";
+                reqEntity.Button3 = "Covid19 Test";
             }
 
             reqEntity.Button4 = string.Empty;
+
+            if (this.IsCheckedFluShot)
+            {
+                reqEntity.Button4 = "Flu Shot";
+            }
+            else if (this.IsCheckedShingles)
+            {
+                reqEntity.Button4 = "Shingles";
+            }
+            else if (this.IsCheckedPneumococcus)
+            {
+                reqEntity.Button4 = "Pneumococcus";
+            }
+            else if (this.IsCheckedOtherVaccination)
+            {
+                reqEntity.Button4 = "Other Vaccines";
+            }
 
             SetLoaderVisibility("Adding user...");
             var result = await _windowsManager.SaveUserData(reqEntity, false);
@@ -1116,6 +1130,7 @@ namespace UserManagement.UI.ViewModels
             LastName = string.Empty;
             MobileNumber = string.Empty;
             IsCheckedIndifferent = false;
+            IsCheckedCovid19Test = false;
             IsCheckedVeryGood = false;
             IsCheckedVeryTerrible = false;
             IsCheckedFluShot = false;
