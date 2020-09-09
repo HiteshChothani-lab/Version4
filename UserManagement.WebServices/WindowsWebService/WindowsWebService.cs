@@ -283,6 +283,7 @@ namespace UserManagement.WebServices
             string endpoint = $"manage_user{terminator}" +
                               $"id={reqContract.Id}&" +
                               $"user_id={reqContract.UserId}&" +
+                              $"master_store_id={Config.MasterStore.StoreId}&" +
                               $"super_master_id={reqContract.SuperMasterId}&" +
                               $"action={reqContract.Action}&" +
                               $"btn1={reqContract.Button1}&" +
@@ -313,7 +314,9 @@ namespace UserManagement.WebServices
         {
             logger.Trace(reqContract.MovedId);
 
-            string endpoint = $"manage_user{terminator}action=move&" +
+            string endpoint = $"manage_user{terminator}" +
+                $"master_store_id={Config.MasterStore.StoreId}&" +
+                $"action=move&" +
                 $"moved_pos_oid={reqContract.MovedPosOid}&" +
                 $"mid={reqContract.Mid}&" +
                 $"order_id={reqContract.OrderId}&" +
