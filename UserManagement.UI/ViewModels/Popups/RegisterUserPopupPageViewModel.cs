@@ -176,7 +176,7 @@ namespace UserManagement.UI.ViewModels
                             break;
 
                         case (int)GenericStatusValue.Success:
-                            MessageBox.Show(result.Message, "Unsuccessful");
+                            MessageBox.Show(string.IsNullOrEmpty(result.Message) ? result.Messagee : result.Message, "Unsuccessful");
                             break;
 
                         case (int)GenericStatusValue.NoInternetConnection:

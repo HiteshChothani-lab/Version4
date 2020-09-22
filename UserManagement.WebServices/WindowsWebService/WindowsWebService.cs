@@ -172,7 +172,7 @@ namespace UserManagement.WebServices
                 $"user_id={reqContract.UserId}&" +
                 $"super_master_id={reqContract.SuperMasterId}&" +
                 $"orphan_status={reqContract.OrphanStatus}";
-            
+
             var resultContract = await GetDefaultResponseContract(endpoint);
             return resultContract;
         }
@@ -183,6 +183,7 @@ namespace UserManagement.WebServices
 
             var endpoint = $"manage_user{terminator}" +
                            $"action=update_idr_archive&id={reqContract.Id}&" +
+                           $"super_master_id={Config.MasterStore.UserId}&" +
                            $"master_store_id={reqContract.MasterStoreId}";
 
             var resultContract = await GetDefaultResponseContract(endpoint);
@@ -195,6 +196,7 @@ namespace UserManagement.WebServices
 
             var endpoint = $"manage_user{terminator}" +
                            $"action=update_idr_archive&id={reqContract.Id}&" +
+                           $"super_master_id={Config.MasterStore.UserId}&" +
                            $"master_store_id={reqContract.MasterStoreId}";
 
             var resultContract = await GetDefaultResponseContract(endpoint);
@@ -207,8 +209,9 @@ namespace UserManagement.WebServices
 
             var endpoint = $"manage_user{terminator}" +
                            $"action=update_idr&id={reqContract.Id}&" +
+                           $"super_master_id={Config.MasterStore.UserId}&" +
                            $"master_store_id={reqContract.MasterStoreId}";
-            
+
             var resultContract = await GetDefaultResponseContract(endpoint);
             return resultContract;
         }

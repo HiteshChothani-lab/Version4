@@ -515,15 +515,16 @@ namespace UserManagement.UI.ViewModels
                 }
             }
 
-            if (IsAppointmentEnable && !this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
-            {
-                MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
-                return;
-            }
-
             if (IsCheckedCovid19)
             {
                 MessageBox.Show("Sorry, COVID-19 is not available at moment.", "Warning", MessageBoxButton.OK);
+                return;
+            }
+
+            if (IsAppointmentEnable && !this.IsCheckedVeryGood && !this.IsCheckedIndifferent && !IsCheckedCovid19Test &&
+                !IsCheckedFluShot && !IsCheckedShingles && !IsCheckedPneumococcus && !IsCheckedOtherVaccination)
+            {
+                MessageBox.Show("Please make at least one selection", "Required.");
                 return;
             }
 
@@ -942,9 +943,16 @@ namespace UserManagement.UI.ViewModels
                 }
             }
 
-            if (!this.IsCheckedVeryGood && !this.IsCheckedIndifferent)
+            if (IsCheckedCovid19)
             {
-                MessageBox.Show("You must make a selection for New Case or Follow Up or both.", "Required.");
+                MessageBox.Show("Sorry, COVID-19 is not available at moment.", "Warning", MessageBoxButton.OK);
+                return;
+            }
+
+            if (IsAppointmentEnable && !this.IsCheckedVeryGood && !this.IsCheckedIndifferent && !IsCheckedCovid19Test &&
+                !IsCheckedFluShot && !IsCheckedShingles && !IsCheckedPneumococcus && !IsCheckedOtherVaccination)
+            {
+                MessageBox.Show("Please make at least one selection", "Required.");
                 return;
             }
 

@@ -51,7 +51,7 @@
                     FontSize="20"
                     Foreground="Black"
                     Style="{StaticResource TableHeaderTextBlockStyle}"
-                    Text="By what time would you like the order to be fulfilled?" />
+                    Text="What time is the appointment?" />
 
             <Grid Grid.Row="1" Grid.ColumnSpan="2" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="50,10">
