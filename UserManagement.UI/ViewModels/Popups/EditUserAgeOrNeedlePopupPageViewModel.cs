@@ -122,6 +122,20 @@ namespace UserManagement.UI.ViewModels
             get => Config.MasterStore.FacilityType.Equals("Clinic");
         }
 
+        private bool _isVaccinesEditable;
+        public bool IsVaccinesEditable
+        {
+            get => _isVaccinesEditable;
+            set => SetProperty(ref _isVaccinesEditable, value);
+        }
+
+        private double _vaccinesOpacity = 1.0;
+        public double VaccinesOpacity
+        {
+            get => _vaccinesOpacity;
+            set => SetProperty(ref _vaccinesOpacity, value);
+        }
+
         private bool IsSelectedStoreUser = false;
 
         public DelegateCommand CancelCommand { get; private set; }
@@ -366,6 +380,12 @@ namespace UserManagement.UI.ViewModels
             {
                 this.IsCheckedOtherVaccination = true;
             }
+
+            if (SelectedStoreUser.VersionForm != null && SelectedStoreUser.VersionForm.Count > 0)
+            {
+                IsVaccinesEditable = false;
+                VaccinesOpacity = 0.2;
+            }
         }
 
         private void SetUnsetProperties()
@@ -382,6 +402,8 @@ namespace UserManagement.UI.ViewModels
             IsUserTypeMobile = true;
             IsUserTypeNonMobile = false;
             IsSelectedStoreUser = false;
+            IsVaccinesEditable = true;
+            VaccinesOpacity = 1.0;
             SelectedStoreUser = new StoreUserEntity();
         }
     }

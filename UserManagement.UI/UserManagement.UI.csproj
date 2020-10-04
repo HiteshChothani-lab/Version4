@@ -345,5 +345,10 @@
   <ItemGroup>
     <Resource Include="Assets\redneedle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\status_complete.png" />
+    <Resource Include="Assets\status_edit.png" />
+    <Resource Include="Assets\status_incomplete.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

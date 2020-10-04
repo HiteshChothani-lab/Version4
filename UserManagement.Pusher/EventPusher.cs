@@ -61,6 +61,16 @@ namespace UserManagement.Pushers
                 PushData(PusherAction.Store, PusherData.FlagStoreUser, data);
             });
 
+            _eventChannel.Bind(PusherData.FormEditStoreUser, (dynamic data) =>
+            {
+                PushData(PusherAction.Store, PusherData.FormEditStoreUser, data);
+            });
+
+            _eventChannel.Bind(PusherData.FormSubmitStoreUser, (dynamic data) =>
+            {
+                PushData(PusherAction.Store, PusherData.FormSubmitStoreUser, data);
+            });
+
             #endregion
 
             #region Archieve Store User Events
@@ -78,6 +88,16 @@ namespace UserManagement.Pushers
             _eventChannel.Bind(PusherData.DeleteArchieveUser, (dynamic data) =>
             {
                 PushData(PusherAction.Archieve, PusherData.DeleteArchieveUser, data);
+            });
+
+            _eventChannel.Bind(PusherData.FormEditArchieveUser, (dynamic data) =>
+            {
+                PushData(PusherAction.Archieve, PusherData.FormEditArchieveUser, data);
+            });
+
+            _eventChannel.Bind(PusherData.FormSubmitArchieveUser, (dynamic data) =>
+            {
+                PushData(PusherAction.Archieve, PusherData.FormSubmitArchieveUser, data);
             });
 
             #endregion

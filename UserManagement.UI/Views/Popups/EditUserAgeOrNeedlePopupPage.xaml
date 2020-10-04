@@ -116,6 +116,7 @@
 
                 <Grid Grid.Row="0" Grid.Column="3" Visibility="{Binding IsVaccinationVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                     <ToggleButton Margin="2,5"
+                                  IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                           HorizontalContentAlignment="Stretch"
                                           IsChecked="{Binding IsCheckedVeryTerrible}"
                                           Style="{StaticResource RoundToggleButtonStyle}">
@@ -164,6 +165,7 @@
                     </Grid.ColumnDefinitions>
 
                     <ToggleButton Margin="2,5" HorizontalContentAlignment="Stretch"
+                                  IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                           IsChecked="{Binding IsCheckedFluShot}" Style="{StaticResource RoundToggleButtonStyle}"
                                           Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                         <ToggleButton.Content>
@@ -200,6 +202,7 @@
                     </ToggleButton>
 
                     <ToggleButton  Grid.Column="1" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                   IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                            IsChecked="{Binding IsCheckedShingles}" Style="{StaticResource RoundToggleButtonStyle}"
                                            Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                         <ToggleButton.Content>
@@ -238,6 +241,7 @@
                     </ToggleButton>
 
                     <ToggleButton  Grid.Column="2" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                   IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                            IsChecked="{Binding IsCheckedPneumococcus}" Style="{StaticResource RoundToggleButtonStyle}"
                                            Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                         <ToggleButton.Content>
@@ -276,6 +280,7 @@
                     </ToggleButton>
 
                     <ToggleButton  Grid.Column="3" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                   IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                            IsChecked="{Binding IsCheckedCovid19}" Style="{StaticResource RoundToggleButtonStyle}"
                                            Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                         <ToggleButton.Content>
@@ -313,6 +318,7 @@
                     </ToggleButton>
 
                     <ToggleButton  Grid.Column="4" Margin="2,5" HorizontalContentAlignment="Stretch"
+                                   IsEnabled="{Binding IsVaccinesEditable, FallbackValue=True}" Opacity="{Binding VaccinesOpacity, FallbackValue=1}"
                                            IsChecked="{Binding IsCheckedOtherVaccination}" Style="{StaticResource RoundToggleButtonStyle}"
                                            Visibility="{Binding IsCheckedVeryTerrible, Converter={StaticResource VisibilityConverter}, FallbackValue=Visible}">
                         <ToggleButton.Content>

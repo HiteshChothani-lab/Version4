@@ -151,5 +151,44 @@ namespace UserManagement.WebServices.DataContracts.Response
 
         [JsonProperty("room_num")]
         public string RoomNumber { get; set; }
+
+        [JsonProperty("version_form")]
+        public List<VersionForm> VersionForm { get; set; }
+    }
+
+    public class VersionForm
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("survey_id")]
+        public string SurveyId { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("form_type")]
+        public string FormType { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("answers")]
+        public List<Answer> Answers { get; set; }
+    }
+
+    public class Answer
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("question_id")]
+        public string QuestionId { get; set; }
+
+        [JsonProperty("survey_id")]
+        public string SurveyId { get; set; }
+
+        [JsonProperty("answeredText")]
+        public string AnsweredText { get; set; }
     }
 }

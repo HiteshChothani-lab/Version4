@@ -14,9 +14,13 @@
         public static string DeleteStoreUser { get { return $"event-delete-{MasterStoreID}"; } }
         public static string MoveStoreUser { get { return $"event-edit-move-{MasterStoreID}"; } }
         public static string FlagStoreUser { get { return $"event-flag-{MasterStoreID}"; } }
+        public static string FormEditStoreUser { get { return $"event-form-edit-{MasterStoreID}"; } }
+        public static string FormSubmitStoreUser { get { return $"event-form-submit-{MasterStoreID}"; } }
 
         public static string AddArchieveStoreUser { get { return $"event-add-archive-{MasterStoreID}"; } }
         public static string EditArchieveStoreUser { get { return $"event-edit-archive-{MasterStoreID}"; } }
         public static string DeleteArchieveUser { get { return $"event-delete-archive-{MasterStoreID}"; } }
+        public static string FormEditArchieveUser { get { return $"event-form-edit-archive-{MasterStoreID}"; } }
+        public static string FormSubmitArchieveUser { get { return $"event-form-submit-archive-{MasterStoreID}"; } }
     }
 }

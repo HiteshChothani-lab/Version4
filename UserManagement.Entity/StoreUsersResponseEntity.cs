@@ -63,6 +63,7 @@ namespace UserManagement.Entity
         public string RegType { get; set; }
         public int Covid19 { get; set; }
         public string RoomNumber { get; set; }
+        public List<VersionForm> VersionForm { get; set; }
 
         public bool IsFlagSet
         {
@@ -235,11 +236,40 @@ namespace UserManagement.Entity
             get { return string.IsNullOrWhiteSpace(RoomNumber) || "0".Equals(RoomNumber) ? ColorNames.Red : ColorNames.Purple; }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public bool IsItemMovable
+        {
+            get => Column2RowColor != ColorNames.Yellow;
+        }
 
+        public bool IsFluShotAdded { get => Btn4.Contains("Flu Shot"); }
+
+        public string Column1StatusImage
+        {
+            get => IsFluShotAdded ? this.VersionForm != null && this.VersionForm.Count > 0 ? "/UserManagement.UI;component/Assets/status_complete.png" : "/UserManagement.UI;component/Assets/status_incomplete.png" : string.Empty;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyRaised(string propertyname)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
         }
+    }
+
+    public class VersionForm
+    {
+        public string Id { get; set; }
+        public string SurveyId { get; set; }
+        public string Type { get; set; }
+        public string FormType { get; set; }
+        public string Title { get; set; }
+        public List<Answer> Answers { get; set; }
+    }
+
+    public class Answer
+    {
+        public string Id { get; set; }
+        public string QuestionId { get; set; }
+        public string SurveyId { get; set; }
+        public string AnsweredText { get; set; }
     }
 }
